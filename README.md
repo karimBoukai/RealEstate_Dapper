@@ -13,6 +13,7 @@ RealEstate Dapper combines a public property website, an administrative dashboar
 - [Overview](#overview)
 - [Features](#features)
 - [Interface preview](#interface-preview)
+- [Screenshot showcase](#screenshot-showcase)
 - [Technology stack](#technology-stack)
 - [Architecture](#architecture)
 - [Repository structure](#repository-structure)
@@ -24,7 +25,6 @@ RealEstate Dapper combines a public property website, an administrative dashboar
 - [Troubleshooting](#troubleshooting)
 - [Verification checklist](#verification-checklist)
 - [Roadmap](#roadmap)
-- [Acknowledgements and licensing](#acknowledgements-and-licensing)
 - [Author](#author)
 
 ## Overview
@@ -70,6 +70,60 @@ The following screenshots are included in the project package. They illustrate t
 
 </details>
 
+## Screenshot showcase
+
+The sections below reserve space for additional screenshots. Replace each italic placeholder with an image when ready. Suggested filenames are given in Markdown comments, so the README remains clean and does not show broken image links before those files exist.
+
+### Property search and filtering
+
+*Screenshot to add: search controls and matching property cards on a desktop screen.*
+
+<!-- Replace the placeholder above with: ![Property search and filtering](screenshots/property-search.png) -->
+
+### Property gallery and details
+
+*Screenshot to add: the gallery, pricing, property information, and amenities in one representative view.*
+
+<!-- Replace the placeholder above with: ![Property gallery and details](screenshots/property-gallery-details.png) -->
+
+### Management workspace
+
+*Screenshot to add: the property management table and its available controls. Use demonstration data.*
+
+<!-- Replace the placeholder above with: ![Property management workspace](screenshots/property-management.png) -->
+
+### Estate-agent advert form
+
+*Screenshot to add: the estate-agent creation form, showing its fields and layout.*
+
+<!-- Replace the placeholder above with: ![Estate-agent advert form](screenshots/agent-advert-form.png) -->
+
+### Responsive layouts
+
+*Screenshots to add: the same page at phone and tablet widths.*
+
+<!-- Replace the placeholder above with:
+| Phone | Tablet |
+| --- | --- |
+| ![Phone layout](screenshots/responsive-phone.png) | ![Tablet layout](screenshots/responsive-tablet.png) |
+-->
+
+### Light and dark themes
+
+*Screenshots to add: the same page in both themes for a direct visual comparison.*
+
+<!-- Replace the placeholder above with:
+| Light | Dark |
+| --- | --- |
+| ![Light theme](screenshots/theme-light.png) | ![Dark theme](screenshots/theme-dark.png) |
+-->
+
+### API documentation
+
+*Screenshot to add: the Swagger endpoint overview from the running local API.*
+
+<!-- Replace the placeholder above with: ![Swagger API documentation](screenshots/swagger-overview.png) -->
+
 ## Technology stack
 
 Versions below describe the supplied project manifests; the lockfile records resolved frontend dependencies.
@@ -92,18 +146,272 @@ Existing template assets remain in the repository. The redesigned pages use the 
 
 ## Architecture
 
-The solution contains **two application projects**, rather than separate BusinessLayer, EntityLayer, and DataAccessLayer projects.
+### Architectural approach
 
-| Component | Responsibility |
+RealEstate Dapper is a **two-project, server-rendered web application with a separate HTTP API**. Its main boundaries are presentation, API request handling, repository-based persistence, and a shared SQL Server database.
+
+The UI follows ASP.NET Core MVC and composes reusable page sections with ViewComponents. The API uses controllers, DTOs, repository interfaces, and Dapper implementations. These responsibilities live inside the two application projects; there are no separate BusinessLayer, EntityLayer, or DataAccessLayer projects.
+
+The implementation is not a microservices system or a full React single-page application. Business behavior is distributed across controllers and repositories rather than isolated in a dedicated domain/application-service layer.
+
+### System boundaries
+
+```mermaid
+flowchart TD
+    Browser["Browser"] --> MVC["MVC controllers and Razor views"]
+    MVC --> Components["ViewComponents"]
+    MVC --> HTTP["HttpClient"]
+    Components --> HTTP
+    HTTP --> API["API controllers"]
+    API --> Repositories["Repository interfaces and implementations"]
+    Repositories --> Context["Dapper connection context"]
+    Context --> SQL["SQL Server"]
+    Browser --> Assets["Static CSS, JavaScript and React islands"]
+    Vite["Vite build"] --> Assets
+```
+
+The UI and API run as separate ASP.NET Core processes. The UI normally calls the API from the server, and the browser receives rendered HTML. SQL Server connections are created inside the API project; the UI does not query the database directly.
+
+### Presentation layer: MVC and Razor
+
+`RealEstate_Dapper_UI` owns page routing, rendering, layouts, browser authentication cookies, and presentation-level coordination.
+
+| Component | Responsibility | Example |
+| --- | --- | --- |
+| MVC controllers | Accept route/form parameters, request API data, select views, and redirect after operations | `PropertyController` |
+| Razor views | Render typed models, form fields, and page content | `Views/Property/PropertySingle.cshtml` |
+| ViewComponents | Load and render reusable sections with their own data requirements | `_PropertySliderComponentPartial` |
+| Shared layouts | Compose navigation, common assets, and page shells | Public and dashboard layouts |
+| MVC Areas | Group estate-agent controllers and views under a separate route scope | `Areas/EstateAgent/` |
+| UI DTOs and helpers | Represent API responses and prepare display values | Product and property-image DTOs |
+| UI services | Access the current identity and handle API transport failures | `LoginServices`, `ApiUnavailableHandler` |
+
+A ViewComponent is a server-side rendering component, not a React component or an independent service. Its Razor view receives the model supplied by the component. Typed component fallbacks must provide the correct model type even when API data is unavailable.
+
+The detail page combines a typed product model with supplementary values in `ViewBag`. This describes the current implementation; the page does not use one unified, strongly typed aggregate view model.
+
+### API layer and dependency injection
+
+```mermaid
+classDiagram
+    class ProductsController {
+        IProductRepository productRepository
+        ProductList()
+        CreateProduct(dto)
+    }
+    class IProductRepository {
+        <<interface>>
+        GetAllProductAsync()
+        CreateProduct(dto)
+    }
+    class ProductRepository {
+        Context context
+        GetAllProductAsync()
+        CreateProduct(dto)
+    }
+    class Context {
+        CreateConnection()
+    }
+    ProductsController --> IProductRepository : calls
+    ProductRepository ..|> IProductRepository : implements
+    ProductRepository --> Context : obtains connections
+```
+
+The diagram shows selected members of the existing product implementation. It is not a complete class listing.
+
+
+`RealEstate_Dapper_Api` exposes JSON endpoints using ASP.NET Core controllers. Controllers accept request parameters or DTOs, call repository interfaces, and return HTTP results.
+
+For example, `ProductsController` receives `IProductRepository` through constructor injection. Its product-list action calls `GetAllProductAsync()` and returns the resulting records with `Ok(...)`. Dependency registration is invoked through `ContainerDependencies()` in API startup.
+
+This interface boundary separates endpoint handling from SQL implementation. It also provides a place to substitute repository implementations for testing, although the package does not include a dedicated automated test project.
+
+Routes combine controller-level prefixes such as `api/[controller]` with action-specific paths. Several endpoints use action-oriented names, and some existing status changes use GET requests. The API should therefore be understood from its actual routes rather than assumed to follow uniform REST conventions.
+
+### Repository and persistence layer
+
+Repositories contain SQL statements and database operations. The Dapper context reads `ConnectionStrings:connection` and returns an `IDbConnection` backed by `Microsoft.Data.SqlClient.SqlConnection`.
+
+A typical repository operation:
+
+1. Defines the SQL query or mutation.
+2. Prepares parameters for incoming values.
+3. Creates a connection through the context.
+4. Calls a Dapper operation such as `QueryAsync<T>()` or `ExecuteAsync()`.
+5. Returns DTO results or completes the mutation, then disposes the connection.
+
+For example, property search filters active products by title, category, and city using Dapper parameters. Listing queries join `Product` and `Category` to return category labels with property information.
+
+Dapper maps query results to C# objects; it does not provide Entity Framework-style change tracking or automatically create this application's schema. The included context is a connection factory, not an EF `DbContext`. Schema creation and seed data remain external setup requirements.
+
+### DTO boundaries and data flow
+
+Both projects contain DTO definitions for their respective responsibilities. API DTOs describe incoming payloads and query results; UI DTOs deserialize responses and supply presentation data. They are not maintained in a separate shared-contract project.
+
+This makes JSON shape compatibility important: property names, types, null handling, and list-versus-object responses must match across the HTTP boundary. A successful HTTP response alone does not guarantee that the consuming view receives the correct model.
+
+The UI uses both Newtonsoft.Json and System.Text.Json in different code paths. Changes to serialization behavior should account for the specific caller rather than assuming one global serializer configuration.
+
+### Example: loading a property detail page
+
+For `/property/{slug}/{id}`, the current flow is:
+
+1. `PropertyController.PropertySingle` requests `Products/GetProductByProductID?id=...`.
+2. It deserializes the property and returns a not-found result when the request fails or the product is absent.
+3. It derives the expected slug and redirects if the incoming slug differs.
+4. It requests `ProductDetails/GetProductDetailsByProductID?id=...` for supplementary details.
+5. It prepares the product model and `ViewBag` values, then renders the Razor view.
+6. The page invokes components, including the image slider, which requests `ProductImage?id=...` separately.
+7. Razor renders the gallery fallback and serializes data for the optional React gallery enhancement.
+
+A detail page therefore performs multiple API requests. The main product/details calls are sequential in the controller, and component requests add further work. The implementation does not expose a single aggregate endpoint returning every section of the page.
+
+### Property detail request sequence
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant U as MVC application
+    participant A as API
+    participant D as SQL Server
+    B->>U: GET /property/slug/id
+    U->>A: GetProductByProductID
+    A->>D: Query product and category
+    D-->>A: Product data
+    A-->>U: JSON response
+    alt Product missing or request unsuccessful
+        U-->>B: Not-found result
+    else Product available
+        alt Slug differs
+            U-->>B: Redirect to expected slug
+        else Slug matches
+            U->>A: GetProductDetailsByProductID
+            A->>D: Query property details
+            D-->>A: Detail data
+            A-->>U: JSON response
+            alt Details missing or request unsuccessful
+                U-->>B: Not-found result
+            else Details available
+                U->>A: Gallery component requests ProductImage
+                A->>D: Query property images
+                D-->>A: Image records
+                A-->>U: Images or unsuccessful response
+                U-->>B: Razor HTML with gallery or empty state
+                Note over B: React enhances the gallery when loaded
+            end
+        end
+    end
+```
+
+The sequence highlights the main product, details, and gallery requests. Other ViewComponents may make additional calls.
+
+### Authentication and identity flow
+
+The implemented sign-in path crosses both projects:
+
+1. The browser submits credentials to the UI's `LoginController`.
+2. The UI posts the credentials to `Login/SignIn` on the API.
+3. The API queries `AppUser` and generates a JWT containing user and role information.
+4. The UI reads the token claims, normalizes selected identity/role claims, and stores the token as a claim.
+5. ASP.NET Core issues the UI authentication cookie.
+6. Subsequent browser requests use the cookie identity; selected controllers enforce `[Authorize]`.
+
+`LoginServices` obtains the user identifier from the current HTTP context. Role claims influence redirects and menu visibility.
+
+This is the current authentication flow, not a complete security boundary. The UI reads JWT contents without establishing signature validation in that path, API JWT validation is not configured in the supplied startup, and authorization coverage is incomplete. Menu visibility must not be treated as enforcement of permissions. Specific remediation is listed under security and deployment readiness.
+
+### Authentication sequence
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant U as MVC LoginController
+    participant A as API LoginController
+    participant D as SQL Server
+    B->>U: Submit credentials
+    U->>A: POST Login/SignIn
+    A->>D: Query matching AppUser
+    D-->>A: Matching user or no result
+    alt Credentials do not match
+        A-->>U: Unauthorized response
+        U-->>B: Render sign-in view
+    else User matches
+        A-->>U: JWT and expiry
+        Note over U: Read claims and construct cookie identity
+        U-->>B: Set authentication cookie and redirect for handled role
+        B->>U: Subsequent request with cookie
+        Note over U: Selected controllers require authorization
+    end
+```
+
+This describes existing behavior. Token validation, password handling, and complete authorization remain remediation items; the diagram does not imply they are already implemented.
+
+### Frontend composition and build pipeline
+
+The browser interface combines server-rendered HTML with progressive JavaScript enhancements.
+
+| Technology | Architectural role |
 | --- | --- |
-| `RealEstate_Dapper_UI` | Receives browser requests, runs MVC controllers and ViewComponents, calls the API through `HttpClient`, renders Razor views, and serves static assets |
-| `RealEstate_Dapper_Api` | Exposes HTTP endpoints, registers repositories through dependency injection, and performs database operations |
-| Repository classes | Execute SQL through Dapper and map results to application DTOs |
-| Dapper context | Creates SQL Server connections from configuration |
-| SQL Server | Stores application records |
-| `ClientApp` | Compiles JavaScript, React components, CSS, fonts, and icons into the UI project's `wwwroot/dist` directory |
+| Razor | Produces the initial page and form markup on the server |
+| Custom CSS | Provides shared tokens, themes, layouts, and component styling |
+| JavaScript modules | Handle navigation, theme switching, and dashboard behavior |
+| React islands | Enhance selected property-page regions without owning application routing |
+| GSAP | Animates titles and selected page elements |
+| Lenis | Adds smooth scrolling in supported public-page contexts |
+| Chart.js | Renders dashboard charts |
+| Vite | Bundles frontend source into static files served by ASP.NET Core |
 
-A normal page request reaches the MVC application, which requests data from the API. The API accesses SQL Server through its repositories, and MVC renders the result into HTML. React mounts only into selected page regions. Vite is an asset-build tool; ASP.NET Core retains application hosting and routing.
+`ClientApp` is a build workspace inside the UI project. Vite outputs to `wwwroot/dist`, with separate public-site and dashboard entries and split chunks for selected dependencies. Razor references stable entry filenames with versioned URLs.
+
+The browser does not need a separate React application server. Vite's watch script rebuilds assets, while ASP.NET Core continues to host pages and process form submissions. Frontend changes can preserve existing controller routes and form contracts when the markup and submitted field names remain compatible.
+
+### Frontend build and rendering diagram
+
+```mermaid
+flowchart TD
+    CSS["CSS tokens and styles"] --> Vite["Vite build"]
+    JS["Site and dashboard modules"] --> Vite
+    React["React island source"] --> Vite
+    Vite --> Bundles["wwwroot/dist entries and chunks"]
+    Razor["Razor views and layouts"] --> HTML["Server-rendered HTML"]
+    HTML --> Browser["Browser page"]
+    Bundles --> Browser
+    Browser --> Base["Rendered content and forms"]
+    Browser --> Enhancements["Gallery, motion, themes and charts"]
+```
+
+Source files are compiled during frontend development or release preparation. Razor rendering happens when the running application serves a page. These are separate stages.
+
+### Errors and unavailable dependencies
+
+The UI registers `ApiUnavailableHandler` for its HTTP clients. It catches transport exceptions and qualifying timeouts, logs the failure, and returns a synthetic HTTP 503 response to the caller. Existing controller/component branches then choose their fallback behavior.
+
+This handler does not retry requests, cache responses, repair API errors, or validate JSON. It also does not guarantee that the browser receives HTTP 503: a caller may render an empty page section or return a different status, such as the property controller's not-found result.
+
+Typed component fallback models prevent Razor model mismatches. Status-code re-execution provides a styled page for applicable empty error responses, while production exception handling is configured separately in UI startup.
+
+### SignalR boundary
+
+The API maps `SignalRHub` at `/SignalRHub`. Its `SendCategoryCount` method calls the category-count statistics endpoint and broadcasts `ReceiveCategoryCount` to connected clients.
+
+This is a specific realtime integration. It does not establish automatic change tracking for the database or realtime synchronization for every dashboard metric. The hub currently uses a hardcoded localhost API address.
+
+### Runtime configuration and deployment boundaries
+
+| Concern | Current owner |
+| --- | --- |
+| Database connection | API configuration and Dapper context |
+| UI API base address | UI `ApiSettingsKey:BaseUrl`, alongside remaining hardcoded URLs |
+| Browser cookie sign-in | UI authentication middleware |
+| Token generation | API token helpers |
+| CORS and SignalR | API startup |
+| Static files and page routes | UI startup |
+| CSS/JavaScript compilation | `ClientApp` / Vite |
+
+The two applications can run on the same development machine or be deployed as separate processes with appropriate network connectivity. The UI must reach the API, and the API must reach SQL Server. Any browser-to-API integration also needs a browser-reachable API URL and suitable origin configuration.
+
+The package does not define an orchestration platform, deployment automation, distributed cache, background job queue, or dedicated domain-service layer. Adding any of these would be a future architectural decision rather than a description of the current system.
+
 
 ## Repository structure
 
@@ -355,16 +663,6 @@ After configuring your environment:
 - Add meaningful automated API and end-to-end tests, then CI build checks.
 
 These are planned improvements, not completed features.
-
-## Acknowledgements and licensing
-
-The project originated from the Real Estate tutorial series by **Murat Yücedağ**, with subsequent customization, redesign, debugging, and development work.
-
-[Original tutorial](https://youtu.be/O3BMeHM1GC0)
-
-The repository also includes third-party template assets, libraries, fonts, icons, and a React Bits component. Preserve their applicable license notices and attribution. The supplied redesign notes identify the vendored React Bits SplitText component as using MIT + Commons Clause terms; review its applicable terms before redistribution or commercial use.
-
-No project-wide license file is included in the supplied package. This README does not grant an open-source license or replace third-party terms. A project license should be selected and added separately after reviewing the included materials.
 
 ## Author
 
