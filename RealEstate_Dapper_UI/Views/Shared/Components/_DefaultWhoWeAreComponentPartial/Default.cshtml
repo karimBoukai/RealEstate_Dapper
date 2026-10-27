@@ -1,0 +1,57 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.WhoWeAreDtos.ResultServicesDtos>
+@{
+    var services = Model ?? new List<RealEstate_Dapper_UI.Dtos.WhoWeAreDtos.ResultServicesDtos>();
+    // The component only fills these ViewBag values when both API calls succeed
+    // (ViewBag.Title would otherwise still hold the page title, e.g. "Index").
+    var loaded = ViewBag.Description1 != null || ViewBag.Subtitle != null;
+    string? title = loaded ? ViewBag.title : null;
+    string? subtitle = loaded ? ViewBag.Subtitle : null;
+}
+<section class="section section-alt" id="about" aria-labelledby="about-title">
+    <div class="container split">
+        <div class="media-stack" data-reveal>
+            <div class="media-frame">
+                <picture>
+                    <source type="image/webp" srcset="/img/about-600.webp">
+                    <img src="/img/about-600.jpg" alt="" width="600" height="900" loading="lazy" decoding="async">
+                </picture>
+            </div>
+            @if (services.Any())
+            {
+                <div class="media-float">
+                    <strong>@services.Count</strong>
+                    <span>services we offer</span>
+                </div>
+            }
+        </div>
+
+        <div class="prose">
+            <div data-reveal>
+                @if (!string.IsNullOrWhiteSpace(title))
+                {
+                    <p class="eyebrow">@title</p>
+                }
+                <h2 class="section-title" id="about-title">@(string.IsNullOrWhiteSpace(subtitle) ? "Who we are" : subtitle)</h2>
+            </div>
+            @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Description1))
+            {
+                <p data-reveal>@ViewBag.Description1</p>
+            }
+            @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Description2))
+            {
+                <p data-reveal>@ViewBag.Description2</p>
+            }
+
+            @if (services.Any())
+            {
+                <ul class="check-list" data-reveal>
+                    @foreach (var item in services)
+                    {
+                        <li><i class="fa-solid fa-check" aria-hidden="true"></i>@item.ServiceName</li>
+                    }
+                </ul>
+            }
+            <a href="#services" class="btn btn-primary" data-reveal>Discover our services <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</section>

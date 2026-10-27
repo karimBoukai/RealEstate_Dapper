@@ -1,0 +1,53 @@
+@model CreateEmployeeDtos
+@{
+    ViewData["Title"] = "Add New Employee";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Employee/Index/">Employees</a> / Add New Employee</p>
+        <h1>Add New Employee</h1>
+        <p>Add a team member.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Employee</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid cols-2">
+        <div class="field">
+            <label class="field-label" for="Name">Employee Name</label>
+            <input type="text" asp-for="Name" class="form-control" autocomplete="name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Title">Employee Title</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Mail">Employee Email</label>
+            <input type="text" asp-for="Mail" class="form-control" inputmode="email" autocomplete="email" />
+            <span asp-validation-for="Mail"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="PhoneNumber">Employee Number</label>
+            <input type="text" asp-for="PhoneNumber" class="form-control" inputmode="tel" autocomplete="tel" />
+            <span asp-validation-for="PhoneNumber"></span>
+        </div>
+        <div class="field span-2">
+            <label class="field-label" for="ImageUrl">Employee Photo</label>
+            <input type="text" asp-for="ImageUrl" class="form-control" inputmode="url" />
+            <span class="field-hint">Image URL</span>
+            <span asp-validation-for="ImageUrl"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Employee</button>
+            <a href="/Employee/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

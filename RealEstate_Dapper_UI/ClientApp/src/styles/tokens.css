@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Design tokens — shared by the public site, auth screens and dashboards.
+   Theme switching keeps the original contract: <html data-theme="dark|light">
+   persisted in localStorage("theme").
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Typography */
+  --font-display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-xl: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+  --fs-2xl: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  --fs-hero: clamp(2.6rem, 1.6rem + 4.6vw, 5.6rem);
+
+  /* Spacing & shape */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: clamp(4.5rem, 3rem + 6vw, 8rem);
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  --container: 1240px;
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2rem);
+
+  /* Palette — light ("porcelain") */
+  --bg: #f4f2ed;
+  --bg-elev: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f8f6f1;
+  --surface-3: #efece5;
+  --ink: #11131a;
+  --ink-2: #353a47;
+  --muted: #5f6474;          /* 5.9:1 on #fff */
+  --line: rgba(17, 19, 26, 0.1);
+  --line-strong: rgba(17, 19, 26, 0.18);
+
+  --accent: #b58d4f;         /* champagne brass, decorative */
+  --accent-ink: #7f5f2a;     /* 5.6:1 on #fff — for text */
+  --accent-soft: rgba(181, 141, 79, 0.12);
+  --cyan: #2f9e93;
+  --cyan-soft: rgba(47, 158, 147, 0.12);
+
+  --success: #1f8a5b;
+  --success-soft: rgba(31, 138, 91, 0.12);
+  --warning: #a86a12;
+  --warning-soft: rgba(168, 106, 18, 0.13);
+  --danger: #c0392b;
+  --danger-soft: rgba(192, 57, 43, 0.1);
+  --info: #2563a8;
+  --info-soft: rgba(37, 99, 168, 0.1);
+
+  --btn-primary-bg: #11131a;
+  --btn-primary-ink: #f6f3ec;
+  --btn-primary-hover: #262a36;
+
+  --focus: #2f6fdb;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--focus) 35%, transparent);
+
+  --shadow-sm: 0 1px 2px rgba(17, 19, 26, 0.06), 0 1px 1px rgba(17, 19, 26, 0.04);
+  --shadow: 0 10px 30px -12px rgba(17, 19, 26, 0.18), 0 2px 6px rgba(17, 19, 26, 0.05);
+  --shadow-lg: 0 30px 80px -30px rgba(17, 19, 26, 0.35), 0 8px 24px -12px rgba(17, 19, 26, 0.12);
+
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-line: rgba(255, 255, 255, 0.6);
+
+  --grad-aurora: radial-gradient(60% 80% at 15% 0%, rgba(181, 141, 79, 0.16), transparent 60%),
+    radial-gradient(50% 70% at 90% 10%, rgba(47, 158, 147, 0.12), transparent 60%);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur: 260ms;
+
+  /* Always-dark surfaces (hero, sidebar, footer) */
+  --night: #0b0e15;
+  --night-2: #121722;
+  --night-3: #1a2030;
+  --night-ink: #eef0f5;
+  --night-muted: #a3a9b8;
+  --night-line: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a0d13;
+  --bg-elev: #0e1219;
+  --surface: #121620;
+  --surface-2: #171c28;
+  --surface-3: #1e2433;
+  --ink: #eef0f5;
+  --ink-2: #c8cdd8;
+  --muted: #959cad;          /* 6.4:1 on #121620 */
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --accent: #d8b67c;
+  --accent-ink: #e3c38d;
+  --accent-soft: rgba(216, 182, 124, 0.13);
+  --cyan: #6fdccd;
+  --cyan-soft: rgba(111, 220, 205, 0.12);
+
+  --success: #45c08a;
+  --success-soft: rgba(69, 192, 138, 0.14);
+  --warning: #e0a54a;
+  --warning-soft: rgba(224, 165, 74, 0.14);
+  --danger: #f0776a;
+  --danger-soft: rgba(240, 119, 106, 0.13);
+  --info: #7fb0ef;
+  --info-soft: rgba(127, 176, 239, 0.13);
+
+  --btn-primary-bg: #e9e4d8;
+  --btn-primary-ink: #0d1017;
+  --btn-primary-hover: #ffffff;
+
+  --focus: #8bb4ff;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 14px 40px -16px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
+
+  --glass: rgba(18, 22, 32, 0.7);
+  --glass-line: rgba(255, 255, 255, 0.08);
+
+  --grad-aurora: radial-gradient(60% 80% at 15% 0%, rgba(216, 182, 124, 0.12), transparent 60%),
+    radial-gradient(50% 70% at 90% 10%, rgba(111, 220, 205, 0.1), transparent 60%);
+}

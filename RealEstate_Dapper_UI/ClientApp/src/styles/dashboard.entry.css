@@ -1,0 +1,8 @@
+/* Dashboard stylesheet (compiled to wwwroot/dist/dashboard.css) */
+@import "@fontsource-variable/sora";
+@import "@fontsource-variable/manrope";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "@fortawesome/fontawesome-free/css/v4-shims.min.css";
+@import "./tokens.css";
+@import "./base.css";
+@import "./dashboard.css";

@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "My Dashboard";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs">Estate agent</p>
+        <h1>My Dashboard</h1>
+        <p>Your adverts and how they're distributed across cities.</p>
+    </div>
+    <a class="btn btn-primary" asp-area="EstateAgent" asp-controller="MyAdverts" asp-action="CreateAdvert"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Ad</a>
+</div>
+
+@await Component.InvokeAsync("_EstateAgentDashboardStatisticComponentPartial")
+
+@await Component.InvokeAsync("_EstateAgentDashboardChartComponentPartial")
+
+@await Component.InvokeAsync("_EstateAgentLast5ProductsComponentPartial")

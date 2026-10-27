@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+<!-- Section 1 Hero + search -->
+@await Component.InvokeAsync("_DefaultFeatureComponentPartial")
+
+<!-- Section 2 Property Listings (deal of the day) -->
+@await Component.InvokeAsync("_DefaultHomePageProductComponentPartial")
+
+<!-- Section 3 Who We Are -->
+@await Component.InvokeAsync("_DefaultWhoWeAreComponentPartial")
+
+<!-- Section 4 Services -->
+@* @await Component.InvokeAsync("_DefaultBottomGridComponentPartial") *@
+
+<!-- Section 5 Explore city -->
+@await Component.InvokeAsync("_DefaultPopularLocationsComponentPartial")
+
+<!-- Section 6 Clients -->
+@await Component.InvokeAsync("_DefaultOurClientsComponentPartial")
+
+<!-- Section 7 SubFeatures -->
+@await Component.InvokeAsync("_DefaultSubFeatureComponentPartial")
+
+<!-- Section 8 Discount Of Day -->
+@await Component.InvokeAsync("_DefaultDiscountOfDayComponentPartial")
+
+<!-- Section 9 Brand and companies -->
+@* @await Component.InvokeAsync("_DefaultBrandComponentPartial") *@

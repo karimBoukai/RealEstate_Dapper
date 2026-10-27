@@ -1,0 +1,42 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.EstateAgentDtos.EstateAgentDashboardChartDtos>
+@{
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.EstateAgentDtos.EstateAgentDashboardChartDtos>();
+    var labels = Json.Serialize(items.Select(x => x.City)).ToString(); // string → HTML-attribute encoded
+    var values = Json.Serialize(items.Select(x => x.CityCount)).ToString();
+}
+@*
+    Same data as before (Chart API: City / CityCount). The page used to embed a second <html> document
+    and load Chart.js 2.9 from a CDN on top of the template's Chart.js 3.7; the two identical bar charts
+    are now one bar chart (counts) and one doughnut (share) rendered by the bundled Chart.js.
+*@
+<div class="grid grid-2">
+    <section class="card card-pad chart-card" aria-labelledby="city-chart-title">
+        <div class="card-head"><div><h2 id="city-chart-title">City - Advertisement Statistics</h2><p>Number of ads per city</p></div></div>
+        @if (items.Any())
+        {
+            <div class="chart-box"><canvas id="myChart" data-chart="city-ads" data-variant="bar" data-labels="@labels" data-values="@values" role="img" aria-label="Bar chart of advertisement count per city"></canvas></div>
+        }
+        else
+        {
+            <div class="empty-state"><i class="fa-solid fa-chart-column" aria-hidden="true"></i><strong>No chart data</strong></div>
+        }
+    </section>
+    <section class="card card-pad chart-card" aria-labelledby="city-share-title">
+        <div class="card-head"><div><h2 id="city-share-title">City - Advertisement Statistics</h2><p>Share of ads by city</p></div></div>
+        @if (items.Any())
+        {
+            <div class="chart-box"><canvas id="myChart1" data-chart="city-ads" data-variant="doughnut" data-labels="@labels" data-values="@values" role="img" aria-label="Doughnut chart of the share of advertisements per city"></canvas></div>
+            <table class="visually-hidden">
+                <caption>Advertisements per city</caption>
+                <thead><tr><th scope="col">City</th><th scope="col">Ads</th></tr></thead>
+                <tbody>
+                    @foreach (var x in items) { <tr><th scope="row">@x.City</th><td>@x.CityCount</td></tr> }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i><strong>No chart data</strong></div>
+        }
+    </section>
+</div>

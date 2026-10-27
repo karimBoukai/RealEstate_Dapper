@@ -1,0 +1,17 @@
+﻿@{
+    var pageTitle = ViewData["Title"] as string;
+    var hasTitle = !string.IsNullOrWhiteSpace(pageTitle) && pageTitle != "Index";
+}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@(hasTitle ? pageTitle + " · Real Estate" : "Real Estate — You are one step away from your dream home")</title>
+    <meta name="description" content="Find homes for sale and rent, explore popular locations and contact our estate agents.">
+    <meta name="theme-color" content="#0b0e15">
+    <link rel="icon" href="~/favicon.ico">
+    <script>
+        (function () { try { var t = localStorage.getItem('theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) { } })();
+    </script>
+    <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true">
+    <script type="module" src="~/dist/site.js" asp-append-version="true"></script>
+</head>

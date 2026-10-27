@@ -1,0 +1,64 @@
+﻿@model RealEstate_Dapper_UI.Dtos.AppUserDtos.GetAppUserByProductID
+@{
+    string title = ViewBag.Title1 ?? "";
+}
+<aside class="detail-aside" aria-label="Agent and related posts">
+    <section class="card card-pad agent-card" aria-labelledby="agent-title" data-reveal>
+        <p class="eyebrow" id="agent-title">Contact an agent</p>
+        @if (Model != null)
+        {
+            <div class="agent">
+                @if (!string.IsNullOrWhiteSpace(Model.UserImageUrl))
+                {
+                    <img src="@Model.UserImageUrl" alt="" width="76" height="76" loading="lazy">
+                }
+                else
+                {
+                    <span class="avatar" aria-hidden="true">@ViewFormat.Initials(Model.Name)</span>
+                }
+                <div>
+                    <h3>@Model.Name</h3>
+                    <span class="badge badge-success badge-dot">Estate agent</span>
+                </div>
+            </div>
+            <ul class="agent-contact">
+                @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+                {
+                    <li><a href="tel:@Model.PhoneNumber"><i class="fa-solid fa-phone" aria-hidden="true"></i>@Model.PhoneNumber</a></li>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Email))
+                {
+                    <li><a href="mailto:@Model.Email"><i class="fa-regular fa-envelope" aria-hidden="true"></i>@Model.Email</a></li>
+                }
+            </ul>
+            @if (!string.IsNullOrWhiteSpace(Model.Email))
+            {
+                <a class="btn btn-primary btn-block" href="mailto:@Model.Email?subject=@Uri.EscapeDataString(title)">Request details</a>
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary btn-block">Request details</button>
+            }
+        }
+        else
+        {
+            <p class="muted mb-0">Agent details are unavailable right now.</p>
+        }
+    </section>
+
+    <section class="card card-pad" aria-labelledby="popular-title" data-reveal>
+        <p class="eyebrow" id="popular-title">Popular post</p>
+        <article class="mini-post">
+            <img src="~/starter/RealEstatePanel/assets/images/l1.jpg" alt="" width="72" height="72" loading="lazy">
+            <div><a href="#blog-single">Why we are the best in the business</a><span>Sep 09, 2020 - 2 comments</span></div>
+        </article>
+        <article class="mini-post">
+            <img src="~/starter/RealEstatePanel/assets/images/l2.jpg" alt="" width="72" height="72" loading="lazy">
+            <div><a href="#blog-single">Build your next landing page.</a><span>Sep 09, 2020 - 2 comments</span></div>
+        </article>
+        <article class="mini-post">
+            <img src="~/starter/RealEstatePanel/assets/images/l3.jpg" alt="" width="72" height="72" loading="lazy">
+            <div><a href="#blog-single">Simply the best. Better than the rest.</a><span>Sep 10, 2020 - 2 comments</span></div>
+        </article>
+    </section>
+</aside>

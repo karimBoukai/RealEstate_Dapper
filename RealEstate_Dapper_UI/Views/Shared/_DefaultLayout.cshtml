@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+@await Component.InvokeAsync("_HeaderViewComponentPartial")
+<body class="site" data-smooth>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    @await Component.InvokeAsync("_NavbarViewComponentPartial")
+
+    <main id="main" tabindex="-1">
+        @RenderBody()
+    </main>
+
+    @await Component.InvokeAsync("_DefaultFooterComponentPartial")
+
+    @await Component.InvokeAsync("_DefaultScriptComponentPartial")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

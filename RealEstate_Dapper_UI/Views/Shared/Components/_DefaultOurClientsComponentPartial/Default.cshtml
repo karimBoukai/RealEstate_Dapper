@@ -1,0 +1,50 @@
+﻿@model List<ResultTestimonialDtos>
+@{
+    var items = Model ?? new List<ResultTestimonialDtos>();
+}
+<section class="section" id="clients" aria-labelledby="clients-title">
+    <div class="container testimonials">
+        <div data-reveal>
+            <p class="eyebrow">Our clients</p>
+            <h2 class="section-title" id="clients-title">We value <span class="serif">client</span> relationships</h2>
+            <div class="stat-hero">
+                <strong>1235</strong>
+                <span>Satisfied<br>customers</span>
+            </div>
+            <a href="#contact" class="btn btn-primary">Contact our agents <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+
+        <div class="carousel" data-carousel data-reveal>
+            @if (items.Any())
+            {
+                <div class="carousel-track" id="testimonials" tabindex="0" aria-label="Client testimonials" aria-roledescription="carousel">
+                    @foreach (var item in items)
+                    {
+                        <figure class="quote-card" aria-roledescription="slide">
+                            <blockquote>@item.Comment</blockquote>
+                            <figcaption>
+                                <span class="avatar" aria-hidden="true">@ViewFormat.Initials(item.NameSurname)</span>
+                                <span>
+                                    <strong>@item.NameSurname</strong>
+                                    @if (!string.IsNullOrWhiteSpace(item.Title)) { <span>@item.Title</span> }
+                                </span>
+                            </figcaption>
+                        </figure>
+                    }
+                </div>
+                <div class="carousel-controls">
+                    <button type="button" class="icon-btn" data-carousel-prev aria-controls="testimonials" aria-label="Previous testimonial"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+                    <button type="button" class="icon-btn" data-carousel-next aria-controls="testimonials" aria-label="Next testimonial"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                    <span class="carousel-status" aria-live="polite"></span>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fa-regular fa-comment" aria-hidden="true"></i>
+                    <strong>No testimonials yet</strong>
+                </div>
+            }
+        </div>
+    </div>
+</section>

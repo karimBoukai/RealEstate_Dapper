@@ -1,0 +1,22 @@
+@{
+    int code = ViewBag.Code ?? 404;
+    ViewData["Title"] = code == 404 ? "Page not found" : "Something went wrong";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow" data-hero-fade>Error @code</p>
+        <h1 data-hero-fade>@ViewData["Title"]</h1>
+        <p data-hero-fade>
+            @(code == 404
+                ? "This property or page couldn't be found. It may have been removed, or the listing service is unavailable right now."
+                : "The request couldn't be completed. Please try again in a moment.")
+        </p>
+    </div>
+</section>
+<section class="section-tight">
+    <div class="container row-flex">
+        <a class="btn btn-primary" href="/Default/Index/"><i class="fa-solid fa-house" aria-hidden="true"></i> Back to home</a>
+        <a class="btn btn-ghost" href="/Property/Ads">Browse all ads</a>
+    </div>
+</section>

@@ -1,0 +1,8 @@
+﻿@*
+    Bootstrap's bundle (local copy, wwwroot/lib/bootstrap 5.1) is kept for the dropdown behaviour.
+    Everything else is bundled by Vite (ClientApp → wwwroot/dist/dashboard.js); Chart.js is code-split
+    and only loaded on pages that contain a chart. The previous jQuery/owl/tempusdominus/waypoints
+    stack and dashmin's main.js (which threw on pages without its sample charts) are no longer loaded.
+*@
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="~/dist/dashboard.js" asp-append-version="true"></script>

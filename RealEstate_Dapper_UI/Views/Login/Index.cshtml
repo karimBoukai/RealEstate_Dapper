@@ -1,0 +1,94 @@
+﻿@model RealEstate_Dapper_UI.Dtos.LoginDtos.CreateLoginDtos
+@{
+    Layout = null;
+    // LoginController returns this view again when sign-in fails (POST); show that state.
+    var failed = string.Equals(Context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in · Real Estate</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="~/favicon.ico">
+    <script>
+        (function () { try { var t = localStorage.getItem('theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) { } })();
+    </script>
+    <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true">
+    <script type="module" src="~/dist/site.js" asp-append-version="true"></script>
+</head>
+<body class="auth">
+    <a class="skip-link" href="#signin">Skip to sign in</a>
+    <div class="auth-shell">
+        <aside class="auth-visual" aria-hidden="true">
+            <picture>
+                <source type="image/webp" srcset="/img/auth-960.webp 960w, /img/auth-1440.webp 1440w" sizes="(max-width: 900px) 100vw, 55vw">
+                <img src="/img/auth-960.jpg" srcset="/img/auth-960.jpg 960w, /img/auth-1440.jpg 1440w" sizes="(max-width: 900px) 100vw, 55vw" alt="" width="1440" height="961" decoding="async">
+            </picture>
+            <a class="brand" href="/Default/Index/" tabindex="-1">
+                <span class="brand-mark"><i class="fa-solid fa-house-chimney"></i></span>
+                <span class="brand-text">Real Estate<small>Agent workspace</small></span>
+            </a>
+            <div>
+                <p class="auth-quote">You are one step away from your <em>dream home.</em></p>
+                <p>Manage listings, adverts and your team from one place.</p>
+            </div>
+        </aside>
+
+        <main class="auth-panel" id="signin" tabindex="-1">
+            <div class="auth-top">
+                <a class="btn btn-ghost btn-sm" href="/Default/Index/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to site</a>
+                <label class="theme-switch" for="checkbox" title="Toggle dark mode">
+                    <input type="checkbox" id="checkbox" aria-label="Dark mode">
+                    <i class="fa-regular fa-sun ic-sun" aria-hidden="true"></i>
+                    <i class="fa-regular fa-moon ic-moon" aria-hidden="true"></i>
+                </label>
+            </div>
+
+            <div class="auth-card">
+                <p class="eyebrow">Welcome back</p>
+                <h1>Sign in</h1>
+                <p>Use your Real Estate account to continue to your dashboard.</p>
+
+                @if (failed)
+                {
+                    <div class="alert alert-warning" role="alert" style="margin-bottom:1.25rem">
+                        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                        <div>We couldn't sign you in. Check your username and password and try again.</div>
+                    </div>
+                }
+
+                <form method="post" class="stack" style="gap:1.25rem">
+                    <div class="field">
+                        <label class="field-label" for="UserName">Username</label>
+                        <div class="input-icon">
+                            <i class="fa-regular fa-user" aria-hidden="true"></i>
+                            <input type="text" class="form-control" asp-for="UserName" placeholder="Enter your username" autocomplete="username" autofocus>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="Password">Password</label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                            <input type="password" class="form-control" asp-for="Password" placeholder="Password" autocomplete="current-password" style="padding-right:3rem">
+                            <button type="button" class="reveal-pass" data-reveal-pass aria-controls="Password" aria-pressed="false" aria-label="Show password">
+                                <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="auth-row">
+                        <label class="check" for="exampleCheck1">
+                            <input type="checkbox" id="exampleCheck1"> Remember me
+                        </label>
+                        <a href="">Forgot password</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                </form>
+
+                <p class="auth-foot">Don't have an account? <a href="">Sign up</a></p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

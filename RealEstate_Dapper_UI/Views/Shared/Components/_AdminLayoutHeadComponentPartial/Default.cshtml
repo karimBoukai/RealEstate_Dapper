@@ -1,0 +1,15 @@
+﻿@{
+    var pageTitle = ViewData["Title"] as string;
+    var hasTitle = !string.IsNullOrWhiteSpace(pageTitle) && pageTitle != "Index";
+}
+<head>
+    <meta charset="utf-8">
+    <title>@(hasTitle ? pageTitle + " · " : "")Real Estate Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="~/favicon.ico">
+    <script>
+        (function () { try { var t = localStorage.getItem('theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) { } })();
+    </script>
+    <link rel="stylesheet" href="~/dist/dashboard.css" asp-append-version="true">
+</head>

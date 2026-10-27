@@ -1,0 +1,48 @@
+﻿@model List<ResultLast5ProductWithCategoryDtos>
+@{
+    var items = Model ?? new List<ResultLast5ProductWithCategoryDtos>();
+    int count = 0;
+}
+<section class="card card-pad" aria-labelledby="last5-title">
+    <div class="card-head">
+        <div><h2 id="last5-title">Last Five Products</h2><p>Most recently added listings</p></div>
+        <a class="btn btn-ghost btn-sm" href="/Product/Index">Show All Ads <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">District-City</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col"><span class="visually-hidden">View Ad</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <td class="idx">@count</td>
+                            <td class="num">@(((DateTime)item.AdvertisementDate).ToString("dd-MM-yyyy"))</td>
+                            <td class="title-cell">@item.Title</td>
+                            <td>@item.City-@item.District</td>
+                            <td><span class="badge">@item.CategoryName</span></td>
+                            <td class="num">@ViewFormat.Money(item.Price) $</td>
+                            <td data-label="View Ad"><div class="actions"><a class="btn btn-sm btn-ghost" href="@ViewFormat.PropertyUrl(null, item.Title, item.ProductID)">Detail</a></div></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state"><i class="fa-regular fa-folder-open" aria-hidden="true"></i><strong>No products yet</strong></div>
+    }
+</section>

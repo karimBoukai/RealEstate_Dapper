@@ -1,0 +1,47 @@
+@model UpdateWhoWeAreDtos
+@{
+    ViewData["Title"] = "Update Who We Are";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/WhoWeAre/Index/">Who We Are</a> / Update Who We Are</p>
+        <h1>Update Who We Are</h1>
+        <p>Edit the home page “Who we are” copy.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Update Who We Are</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="WhoWeAreDetailID" />
+        <div class="form-grid cols-2">
+        <div class="field">
+            <label class="field-label" for="Title">Title</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Subtitle">Subtitle</label>
+            <input type="text" asp-for="Subtitle" class="form-control" />
+            <span asp-validation-for="Subtitle"></span>
+        </div>
+        <div class="field span-2">
+            <label class="field-label" for="Description1">Description 1</label>
+            <textarea asp-for="Description1" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description1"></span>
+        </div>
+        <div class="field span-2">
+            <label class="field-label" for="Description2">Description 2</label>
+            <textarea asp-for="Description2" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description2"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Information</button>
+            <a href="/WhoWeAre/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

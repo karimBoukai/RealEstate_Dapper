@@ -1,0 +1,39 @@
+﻿@model List<ResultToDoListDtos>
+@{
+    var items = Model ?? new List<ResultToDoListDtos>();
+    var n = 0;
+}
+<section class="card card-pad" aria-labelledby="todo-title">
+    <div class="card-head">
+        <h2 id="todo-title">To Do List</h2>
+        <a href="" class="btn btn-ghost btn-sm">Show All</a>
+    </div>
+    @* The add box and checkboxes are display-only, as in the original (no backend action is wired). *@
+    <div class="todo-form">
+        <label class="visually-hidden" for="todo-new">Enter task</label>
+        <input class="form-control" id="todo-new" type="text" placeholder="Enter task">
+        <button type="button" class="btn btn-primary">Add</button>
+    </div>
+    <ul class="list">
+        @foreach (var item in items)
+        {
+            n++;
+            var id = $"todo-{item.ToDoListID}-{n}";
+            <li class="todo-item">
+                @if (item.ToDoListStatus == true)
+                {
+                    <label for="@id"><input id="@id" type="checkbox"> <span>@item.Description</span></label>
+                    <button type="button" class="icon-btn" style="width:34px;height:34px" aria-label="Remove task"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                }
+                else
+                {
+                    <label for="@id"><input id="@id" type="checkbox" checked> <span><del>@item.Description</del></span></label>
+                    <button type="button" class="icon-btn" style="width:34px;height:34px;color:var(--accent-ink)" aria-label="Remove task"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                }
+            </li>
+        }
+        <li class="todo-item">
+            <label for="todo-sample"><input id="todo-sample" type="checkbox"> <span class="muted">Short task goes here...</span></label>
+        </li>
+    </ul>
+</section>

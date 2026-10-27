@@ -1,0 +1,28 @@
+﻿@* Default layout (Views/_ViewStart) — used by Home, Test and Error pages. Same public chrome as the site. *@
+<!DOCTYPE html>
+<html lang="en">
+@await Component.InvokeAsync("_HeaderViewComponentPartial")
+<body class="site">
+    <a class="skip-link" href="#main">Skip to content</a>
+    @await Component.InvokeAsync("_NavbarViewComponentPartial")
+
+    <section class="page-hero">
+        <div class="container">
+            <p class="eyebrow" data-hero-fade>Real Estate</p>
+            <h1 data-hero-fade>@(ViewData["Title"] ?? "Real Estate")</h1>
+        </div>
+    </section>
+
+    <main id="main" tabindex="-1" class="section-tight">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    @await Component.InvokeAsync("_DefaultFooterComponentPartial")
+
+    @* jQuery is kept for pages that still use it (e.g. Test/Index SignalR demo). *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,70 @@
+@model List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductAdvertsListWithCategoryByEmployeeDtos>
+@{
+    ViewData["Title"] = "Passive Ads Listings";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductAdvertsListWithCategoryByEmployeeDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/EstateAgent/Dashboard/Index/">My Dashboard</a> / Passive Ads Listings</p>
+        <h1>Passive Ads Listings</h1>
+        <p>Adverts that are turned off and hidden from the site.</p>
+    </div>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Passive Ads Listings</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "ad" : "ads")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Advertisement Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col" class="num">Price</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"><span class="visually-hidden">Turn on</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">
+                                <span class="row-flex" style="gap:.75rem;flex-wrap:nowrap">
+                                    @if (!string.IsNullOrWhiteSpace(item.CoverImage) && (item.CoverImage.StartsWith("http") || item.CoverImage.StartsWith("/"))) { <img class="thumb" src="@item.CoverImage" alt="" width="44" height="44" loading="lazy"> }
+                                    <span>@item.Title</span>
+                                </span>
+                            </td>
+                            <td><span class="badge">@item.CategoryName</span></td>
+                            <td class="num">@ViewFormat.Money(item.Price)</td>
+                            <td><span class="badge badge-info">@item.Type</span></td>
+                            <td data-label="Turn on">
+                                <div class="actions">
+                                    <a class="btn btn-sm btn-success" asp-area="EstateAgent" asp-controller="MyAdverts" asp-action="ProductAdsPageStatusChangeToTrue" asp-route-id="@item.ProductID"><i class="fa-regular fa-circle-play" aria-hidden="true"></i> Turn on</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+            <strong>No passive ads</strong>
+            <p>Ads you turn off will appear here.</p>
+        </div>
+    }
+</section>

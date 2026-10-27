@@ -1,0 +1,67 @@
+@model List<ResultProductDtos>
+@{
+    ViewData["Title"] = "Deal Of The Day";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<ResultProductDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / Deal Of The Day</p>
+        <h1>Deal Of The Day</h1>
+        <p>Choose which listings appear in “Today’s special ads” on the home page.</p>
+    </div>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Deal Of The Day</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "ad" : "ads")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Advertisement Title</th>
+                        <th scope="col">City</th>
+                        <th scope="col">District</th>
+                        <th scope="col">Category</th>
+                        <th scope="col" class="num">Price</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Deal of the day</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">@item.Title</td>
+                            <td>@item.City</td>
+                            <td>@item.District</td>
+                            <td><span class="badge">@item.CategoryName</span></td>
+                            <td class="num">@ViewFormat.Money(item.Price)</td>
+                            <td><span class="badge badge-info">@item.Type</span></td>
+                            <td data-label="Deal of the day"><div class="actions" style="justify-content:flex-start">@if (item.DealOfTheDay == true) { <span class="badge badge-success badge-dot">Active</span> <a href="/DealOfTheDay/ProductDealOfTheDayeStatusChangeToFalse/@item.ProductID" class="btn btn-sm btn-ghost">Deactivate</a> } else { <span class="badge badge-muted badge-dot">Passive</span> <a href="/DealOfTheDay/ProductDealOfTheDayeStatusChangeToTrue/@item.ProductID" class="btn btn-sm btn-success">Activate</a> }</div></td>
+                            <td data-label="Actions"><div class="actions"><a href="@ViewFormat.PropertyUrl(item.SlugUrl, item.Title, item.ProductID)" class="btn btn-sm btn-ghost"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> On The Site</a></div></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+            <strong>No ads yet</strong>
+            <p>Listings will appear here once ads are created.</p>
+        </div>
+    }
+</section>

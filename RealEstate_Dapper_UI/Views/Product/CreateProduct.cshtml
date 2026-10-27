@@ -1,0 +1,68 @@
+@model CreateProductDtos
+@{
+    ViewData["Title"] = "Add New Ad";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Product/Index/">Products</a> / Add New Ad</p>
+        <h1>Add New Ad</h1>
+        <p>Create a new listing.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Ad</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid cols-2">
+        <div class="field span-2">
+            <label class="field-label" for="Title">Advertisment Title</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="City">City</label>
+            <input type="text" asp-for="City" class="form-control" />
+            <span asp-validation-for="City"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="District">District</label>
+            <input type="text" asp-for="District" class="form-control" />
+            <span asp-validation-for="District"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="ProductCategory">Category</label>
+            @Html.DropDownListFor(x => x.ProductCategory, (List<SelectListItem>)ViewBag.v, new { @class = "form-select" })
+            <span asp-validation-for="ProductCategory"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Price">Price</label>
+            <input type="text" asp-for="Price" class="form-control" inputmode="decimal" />
+            <span asp-validation-for="Price"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Type">Type</label>
+            <input type="text" asp-for="Type" class="form-control" />
+            <span class="field-hint">e.g. Sale or Rent</span>
+            <span asp-validation-for="Type"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="StructureType">Structure Type</label>
+            <input type="text" asp-for="StructureType" class="form-control" />
+            <span asp-validation-for="StructureType"></span>
+        </div>
+        <div class="field span-2">
+            <label class="field-label" for="ExteriorMaterial">Exterior Material</label>
+            <input type="text" asp-for="ExteriorMaterial" class="form-control" />
+            <span asp-validation-for="ExteriorMaterial"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Ad</button>
+            <a href="/Product/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

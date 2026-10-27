@@ -1,0 +1,32 @@
+@model CreateAmenityDtos
+@{
+    ViewData["Title"] = "Add New Amenity";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Amenity/Index/">Amenity</a> / Add New Amenity</p>
+        <h1>Add New Amenity</h1>
+        <p>Create an amenity that listings can reference.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Amenity</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid">
+        <div class="field span-2">
+            <label class="field-label" for="Title">Amenity Title</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Amenity</button>
+            <a href="/Amenity/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

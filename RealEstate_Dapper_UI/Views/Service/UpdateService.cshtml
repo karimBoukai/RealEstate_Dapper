@@ -1,0 +1,40 @@
+@model UpdateServiceDtos
+@{
+    ViewData["Title"] = "Update Service";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Service/Index/">Services</a> / Update Service</p>
+        <h1>Update Service</h1>
+        <p>Edit a service.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Update Service</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="ServiceID" />
+        <div class="form-grid cols-2">
+        <div class="field">
+            <label class="field-label" for="ServiceName">Service Name</label>
+            <input type="text" asp-for="ServiceName" class="form-control" />
+            <span asp-validation-for="ServiceName"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="ServiceStatus">Service Status</label>
+            <select asp-for="ServiceStatus" class="form-select">
+                <option value="true" selected="@(Model?.ServiceStatus == true)">True (active)</option>
+                <option value="false" selected="@(Model?.ServiceStatus != true)">False (passive)</option>
+            </select>
+            <span asp-validation-for="ServiceStatus"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Service</button>
+            <a href="/Service/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

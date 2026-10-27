@@ -1,0 +1,66 @@
+@model List<ResultEmployeeDtos>
+@{
+    ViewData["Title"] = "Employees";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<ResultEmployeeDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / Employees</p>
+        <h1>Employees</h1>
+        <p>Your team of estate agents and staff.</p>
+    </div>
+    <a class="btn btn-primary" href="/Employee/CreateEmployee/"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Employee</a>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Employees</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "record" : "records")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Employee Name</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">
+                                <span class="row-flex" style="gap:.75rem;flex-wrap:nowrap">
+                                    @if (!string.IsNullOrWhiteSpace(item.ImageUrl)) { <img class="thumb" src="@item.ImageUrl" alt="" width="44" height="44" loading="lazy" style="border-radius:50%"> }
+                                    else { <span class="avatar" aria-hidden="true">@ViewFormat.Initials(item.Name)</span> }
+                                    <span>@item.Name</span>
+                                </span>
+                            </td>
+                            <td>@item.Title</td>
+                            <td>@if (item.Status) { <span class="badge badge-success badge-dot">Active</span> } else { <span class="badge badge-muted badge-dot">Passive</span> }</td>
+                            <td data-label="Actions"><div class="actions"><a href="/Employee/DeleteEmployee/@item.EmployeeID" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash-can" aria-hidden="true"></i> Delete</a><a href="/Employee/UpdateEmployee/@item.EmployeeID" class="btn btn-sm btn-ghost"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Update</a></div></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            <strong>No employees yet</strong>
+            <p>Add your first team member.</p>
+        </div>
+    }
+</section>

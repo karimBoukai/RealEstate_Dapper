@@ -1,0 +1,27 @@
+﻿@model List<ResultSubFeatureDtos>
+@{
+    var items = Model ?? new List<ResultSubFeatureDtos>();
+}
+@if (items.Any())
+{
+    <section class="section section-alt" id="services" aria-label="Our services">
+        <div class="container">
+            <div class="feature-grid">
+                @foreach (var item in items)
+                {
+                    <article class="feature-card" data-reveal>
+                        <span class="feature-icon" aria-hidden="true"><i class="@item.Icon"></i></span>
+                        @if (!string.IsNullOrWhiteSpace(item.TopTitle)) { <p class="feature-kicker">@item.TopTitle</p> }
+                        <h3>@item.MainTitle</h3>
+                        <p>@item.Description</p>
+                        @if (!string.IsNullOrWhiteSpace(item.SubTitle)) { <p class="feature-more">@item.SubTitle</p> }
+                    </article>
+                }
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <span id="services" class="anchor"></span>
+}

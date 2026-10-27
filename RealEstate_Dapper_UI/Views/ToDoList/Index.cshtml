@@ -1,0 +1,45 @@
+@model List<ResultToDoListDtos>
+@{
+    ViewData["Title"] = "To Do List";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<ResultToDoListDtos>();
+    int count = 0;
+}
+@* ToDoListController.Index existed without a view (it threw "view not found"). Read-only list, as the API data allows. *@
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / To Do List</p>
+        <h1>To Do List</h1>
+        <p>All tasks from the to-do list API.</p>
+    </div>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">To Do List</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "task" : "tasks")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead><tr><th scope="col" class="idx">#</th><th scope="col">Description</th><th scope="col">Status</th></tr></thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">@item.Description</td>
+                            <td>@if (item.ToDoListStatus) { <span class="badge badge-warning badge-dot">Open</span> } else { <span class="badge badge-success badge-dot">Done</span> }</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state"><i class="fa-regular fa-square-check" aria-hidden="true"></i><strong>No tasks</strong></div>
+    }
+</section>

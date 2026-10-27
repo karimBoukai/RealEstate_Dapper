@@ -1,0 +1,20 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.PropertyAmenityDtos.ResultPropertyAmenityByStatusTrueDtos>
+@{
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.PropertyAmenityDtos.ResultPropertyAmenityByStatusTrueDtos>();
+}
+<article class="card card-pad detail-section" data-reveal>
+    <h2>Amenities</h2>
+    @if (items.Any())
+    {
+        <ul class="amenity-list">
+            @foreach (var item in items)
+            {
+                <li><i class="fa-solid fa-check" aria-hidden="true"></i>@item.Title</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="muted mb-0">No amenities listed for this property.</p>
+    }
+</article>

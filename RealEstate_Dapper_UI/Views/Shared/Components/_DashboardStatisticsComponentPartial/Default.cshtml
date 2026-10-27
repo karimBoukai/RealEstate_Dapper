@@ -1,0 +1,22 @@
+﻿@{
+    var tiles = new (string Icon, string Label, object? Value)[]
+    {
+        ("fa-solid fa-bullhorn", "Total Number of Ads", ViewBag.ProductCount),
+        ("fa-solid fa-trophy", "Most Productive Employee", ViewBag.EmployeeNameByMaxProductCount),
+        ("fa-solid fa-city", "City Count", ViewBag.DifferentCityCount),
+        ("fa-solid fa-dollar-sign", "Avrage Rent Price", ViewBag.AvgProductPriceByRent),
+    };
+}
+<section class="grid grid-kpi" aria-label="Key statistics">
+    @foreach (var t in tiles)
+    {
+        var v = ViewFormat.Stat(t.Value);
+        <article class="kpi">
+            <span class="kpi-icon" aria-hidden="true"><i class="@t.Icon"></i></span>
+            <div>
+                <p class="kpi-label">@t.Label</p>
+                <p class="kpi-value @(v == "—" ? "is-empty" : "")">@v</p>
+            </div>
+        </article>
+    }
+</section>

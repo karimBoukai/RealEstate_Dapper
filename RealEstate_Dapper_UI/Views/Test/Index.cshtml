@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.SignalR
+@{
+    ViewData["Title"] = "SignalR test";
+}
+
+@section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:44387/SignalRHub")
+                .build();
+
+            $("#connstatus").text(connection.state);
+
+            connection.start().then(function () {
+                $("#connstatus").text(connection.state);
+                setInterval(() => {
+                    connection.invoke("SendCategoryCount");
+                }, 1000);
+
+            }).catch(function (err) { console.log(err) });
+
+            connection.on("ReceiveCategoryCount", (value1) => {
+                $("#categorycount").text(value1);
+            });
+
+        });
+    </script>
+}
+
+<div class="stack" style="max-width:720px">
+    <div class="alert alert-warning" role="status">
+        <i class="fa-solid fa-plug" aria-hidden="true"></i>
+        <div>Connection Status: <strong id="connstatus"></strong></div>
+    </div>
+    <div class="alert" role="status">
+        <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+        <div>Category Count: <strong id="categorycount"></strong></div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Views/Admin/Index.cshtml";
+
+    // Same ViewBag values as before (StatisticsController), grouped for readability.
+    // "Apartment Count" appeared twice in the old grid with the same value; it is shown once.
+    var groups = new (string Title, (string Icon, string Label, object? Value)[] Tiles)[]
+    {
+        ("Inventory", new (string, string, object?)[] {
+            ("fa-solid fa-box", "Total Product Count", ViewBag.ProductCount),
+            ("fa-solid fa-building", "Apartment Count", ViewBag.ApartmentCount),
+            ("fa-solid fa-tags", "Category Count", ViewBag.CategoryCount),
+            ("fa-solid fa-list", "Active Category Count", ViewBag.ActiveCategoryCount),
+            ("fa-solid fa-eye-slash", "Passive Category Count", ViewBag.PassiveCategoryCount),
+            ("fa-solid fa-star", "Top Category", ViewBag.CategoryNameByMaxProductCount),
+        }),
+        ("Pricing & size", new (string, string, object?)[] {
+            ("fa-solid fa-dollar-sign", "Average Price (Rent)", ViewBag.AvgProductPriceByRent),
+            ("fa-solid fa-coins", "Last Product Price", ViewBag.LastProductPrice),
+            ("fa-solid fa-bed", "Average Room Count", ViewBag.AvgRoomCount),
+        }),
+        ("People & places", new (string, string, object?)[] {
+            ("fa-solid fa-users", "Active Employee Count", ViewBag.ActiveEmployeeCount),
+            ("fa-solid fa-user-tie", "Top Employee", ViewBag.EmployeeNameByMaxProductCount),
+            ("fa-solid fa-map-marker-alt", "Top City", ViewBag.MaxCityNameByMaXProductCount),
+            ("fa-solid fa-city", "Different City Count", ViewBag.DifferentCityCount),
+        }),
+        ("Buildings", new (string, string, object?)[] {
+            ("fa-solid fa-calendar-plus", "Newest Building Year", ViewBag.NewestBuildingYear),
+            ("fa-solid fa-calendar-minus", "Oldest Building Year", ViewBag.OldestBuildingYear),
+        }),
+    };
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / Statistics</p>
+        <h1>Statistics</h1>
+        <p>Live figures from the statistics API.</p>
+    </div>
+</div>
+
+@foreach (var g in groups)
+{
+    <section class="kpi-section" aria-label="@g.Title">
+        <h2>@g.Title</h2>
+        <div class="grid grid-kpi">
+            @foreach (var t in g.Tiles)
+            {
+                var v = ViewFormat.Stat(t.Value);
+                <article class="kpi">
+                    <span class="kpi-icon" aria-hidden="true"><i class="@t.Icon"></i></span>
+                    <div>
+                        <p class="kpi-label">@t.Label</p>
+                        <p class="kpi-value @(v == "—" ? "is-empty" : "")">@v</p>
+                    </div>
+                </article>
+            }
+        </div>
+    </section>
+}

@@ -1,0 +1,37 @@
+@* Right-hand topbar tools shared by the admin and estate-agent navbars: notifications (sample), theme, profile. *@
+@{
+    var userName = User.FindFirst("UserName")?.Value ?? User.Identity?.Name ?? "Kerim Elmali";
+}
+<div class="dropdown">
+    <button type="button" class="icon-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
+        <i class="fa-regular fa-bell" aria-hidden="true"></i><span class="dot" aria-hidden="true"></span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end">
+        <p class="dropdown-header">Notifications</p>
+        <a href="#" class="dropdown-item"><span><strong>Profile updated</strong><small>15 minutes ago</small></span></a>
+        <a href="#" class="dropdown-item"><span><strong>New user added</strong><small>15 minutes ago</small></span></a>
+        <a href="#" class="dropdown-item"><span><strong>Password changed</strong><small>15 minutes ago</small></span></a>
+        <hr class="dropdown-divider">
+        <a href="#" class="dropdown-item" style="justify-content:center">See all notifications</a>
+    </div>
+</div>
+
+<label class="theme-switch" for="dash-theme" title="Toggle dark mode">
+    <input type="checkbox" id="dash-theme" aria-label="Dark mode">
+    <i class="fa-regular fa-sun ic-sun" aria-hidden="true"></i>
+    <i class="fa-regular fa-moon ic-moon" aria-hidden="true"></i>
+</label>
+
+<div class="dropdown">
+    <button type="button" class="profile-btn" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="avatar" aria-hidden="true">@ViewFormat.Initials(userName)</span>
+        <span class="name">@userName</span>
+        <i class="fa-solid fa-chevron-down" aria-hidden="true" style="font-size:.7rem;opacity:.6"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end" style="min-width:220px">
+        <a href="/Profile/MyProfile/" class="dropdown-item"><i class="fa-regular fa-user" aria-hidden="true"></i> My Profile</a>
+        <a href="#" class="dropdown-item"><i class="fa-solid fa-gear" aria-hidden="true"></i> Settings</a>
+        <hr class="dropdown-divider">
+        <a href="/Login/Logout/" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Log Out</a>
+    </div>
+</div>

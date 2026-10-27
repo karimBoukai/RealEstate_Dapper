@@ -1,0 +1,22 @@
+﻿@model List<ResultBottomGridDtos>
+@{
+    var items = Model ?? new List<ResultBottomGridDtos>();
+}
+@* Currently not invoked on the home page (commented out in Default/Index), kept styled for reuse. *@
+@if (items.Any())
+{
+    <section class="section" id="steps" aria-label="Highlights">
+        <div class="container">
+            <div class="feature-grid">
+                @foreach (var item in items)
+                {
+                    <article class="feature-card" data-reveal>
+                        <span class="feature-icon" aria-hidden="true"><i class="@item.Icon"></i></span>
+                        <h3>@item.Title</h3>
+                        <p>@item.Description</p>
+                    </article>
+                }
+            </div>
+        </div>
+    </section>
+}

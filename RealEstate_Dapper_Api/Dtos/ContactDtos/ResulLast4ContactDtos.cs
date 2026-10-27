@@ -1,0 +1,14 @@
+﻿namespace RealEstate_Dapper_Api.Dtos.ContactDtos
+{
+    public class ResulLast4ContactDtos
+    {
+
+        public int ContactID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Message { get; set; }
+        public DateTime SendDate { get; set; }
+        public string Subject { get; set; }
+
+    }
+}

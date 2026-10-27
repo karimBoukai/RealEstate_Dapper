@@ -1,0 +1,39 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.PropertyImageDtos.PropertyImageDtos>
+@{
+    var images = (Model ?? new List<RealEstate_Dapper_UI.Dtos.PropertyImageDtos.PropertyImageDtos>())
+        .Where(x => !string.IsNullOrWhiteSpace(x.ImageUrl))
+        .Select(x => x.ImageUrl)
+        .ToList();
+    string title = ViewBag.Title1 ?? "Property";
+}
+@* React island (ClientApp/src/islands/PropertyGallery.jsx). The markup below is the no-JS fallback. *@
+<div class="property-gallery" data-island="property-gallery">
+    <script type="application/json">@Html.Raw(Json.Serialize(new { images, title }))</script>
+    @if (images.Any())
+    {
+        <div class="gallery">
+            <div class="gallery-stage">
+                <img src="@images[0]" alt="@title — photo 1 of @images.Count" fetchpriority="high" decoding="async">
+            </div>
+            @if (images.Count > 1)
+            {
+                <div class="gallery-thumbs">
+                    @foreach (var src in images.Skip(1))
+                    {
+                        <a href="@src" target="_blank" rel="noopener" style="display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden">
+                            <img src="@src" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover">
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-regular fa-image" aria-hidden="true"></i>
+            <strong>No photos yet</strong>
+            <p>Images for this listing haven't been uploaded.</p>
+        </div>
+    }
+</div>

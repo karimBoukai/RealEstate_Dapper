@@ -1,0 +1,32 @@
+@model CreateCategoryDtos
+@{
+    ViewData["Title"] = "Add New Category";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Category/Index/">Categories</a> / Add New Category</p>
+        <h1>Add New Category</h1>
+        <p>Create a property category.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Category</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid">
+        <div class="field span-2">
+            <label class="field-label" for="CategoryName">Category Name</label>
+            <input type="text" asp-for="CategoryName" class="form-control" />
+            <span asp-validation-for="CategoryName"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Category</button>
+            <a href="/Category/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

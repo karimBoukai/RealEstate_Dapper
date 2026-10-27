@@ -1,0 +1,33 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.MessagesDtos.ResultInBoxMessagesDtos>
+@{
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.MessagesDtos.ResultInBoxMessagesDtos>();
+}
+<div class="dropdown">
+    <button type="button" class="icon-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Messages (@items.Count)">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+        @if (items.Any(x => !x.IsRead)) { <span class="dot" aria-hidden="true"></span> }
+    </button>
+    <div class="dropdown-menu dropdown-menu-end">
+        <p class="dropdown-header">Messages</p>
+        @foreach (var item in items)
+        {
+            <a href="#" class="dropdown-item">
+                @if (!string.IsNullOrWhiteSpace(item.UserImageUrl))
+                {
+                    <img class="avatar" src="@item.UserImageUrl" alt="" width="36" height="36">
+                }
+                else
+                {
+                    <span class="avatar" aria-hidden="true">@ViewFormat.Initials(item.Name)</span>
+                }
+                <span><strong>@item.Name sent you a message</strong><small>@(((DateTime)item.SendDate).ToString("dd-MM-yyyy"))</small></span>
+            </a>
+        }
+        @if (!items.Any())
+        {
+            <p class="dropdown-item muted" style="margin:0">No messages</p>
+        }
+        <hr class="dropdown-divider">
+        <a href="#" class="dropdown-item" style="justify-content:center">See all messages</a>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+@model RealEstate_Dapper_UI.Dtos.BottomGridDtos.CreateBottomGridDtos
+@{
+    ViewData["Title"] = "Add New Bottom Grid";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/BottomGrid/Index/">Bottom Grid</a> / Add New Bottom Grid</p>
+        <h1>Add New Bottom Grid</h1>
+        <p>Create a highlight card.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Bottom Grid</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid cols-2">
+        <div class="field">
+            <label class="field-label" for="Title">Title</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="Icon">Icon</label>
+            <input type="text" asp-for="Icon" class="form-control" />
+            <span class="field-hint">Font Awesome class, e.g. fa fa-home</span>
+            <span asp-validation-for="Icon"></span>
+        </div>
+        <div class="field span-2">
+            <label class="field-label" for="Description">Description</label>
+            <input type="text" asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Bottom Grid</button>
+            <a href="/BottomGrid/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

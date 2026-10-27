@@ -1,0 +1,58 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductWithSearchListDtos>
+@{
+    ViewData["Title"] = "Search results";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductWithSearchListDtos>();
+    string keyword = ViewBag.searchKeyValue ?? "";
+    string city = ViewBag.city ?? "";
+}
+
+<section class="page-hero">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb" data-hero-fade>
+            <ol>
+                <li><a href="/Default/Index/">Home</a></li>
+                <li><a asp-controller="Property" asp-action="Ads">Ads</a></li>
+                <li aria-current="page">Search</li>
+            </ol>
+        </nav>
+        <p class="eyebrow" data-hero-fade>Search results</p>
+        <h1 data-hero-fade>All sale &amp; rent ads</h1>
+        @if (!string.IsNullOrWhiteSpace(keyword) || !string.IsNullOrWhiteSpace(city))
+        {
+            <div class="filter-chips" style="margin-top:1.25rem" data-hero-fade>
+                @if (!string.IsNullOrWhiteSpace(keyword)) { <span class="badge badge-glass"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> @keyword</span> }
+                @if (!string.IsNullOrWhiteSpace(city)) { <span class="badge badge-glass"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @city</span> }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="section-tight" aria-labelledby="results-title">
+    <div class="container">
+        <div class="results-bar">
+            <h2 class="results-count" id="results-title" aria-live="polite">@items.Count <span>@(items.Count == 1 ? "result" : "results")</span></h2>
+            <a class="btn btn-ghost btn-sm" href="/Default/Index/#search"><i class="fa-solid fa-sliders" aria-hidden="true"></i> New search</a>
+        </div>
+
+        @if (items.Any())
+        {
+            <div class="card-grid">
+                @for (var i = 0; i < items.Count; i++)
+                {
+                    var item = items[i];
+                    <partial name="_PropertyCard" model='new PropertyCardModel(item.ProductID, item.Title, item.Price, item.Type, item.CategoryName, item.Address, item.District, item.City, item.CoverImage, ViewFormat.PropertyUrl(null, item.Title, item.ProductID), i < 3)' />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fa-solid fa-magnifying-glass-location" aria-hidden="true"></i>
+                <strong>No properties match your search</strong>
+                <p>Try different keywords, another category or a different city.</p>
+                <a class="btn btn-primary" href="/Default/Index/#search" style="margin-top:1rem">Search again</a>
+            </div>
+        }
+    </div>
+</section>

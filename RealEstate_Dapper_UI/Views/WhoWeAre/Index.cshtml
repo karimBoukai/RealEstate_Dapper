@@ -1,0 +1,58 @@
+@model List<ResultWhoWeAreDetailDtos>
+@{
+    ViewData["Title"] = "Who We Are";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<ResultWhoWeAreDetailDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / Who We Are</p>
+        <h1>Who We Are</h1>
+        <p>Copy for the “Who we are” section on the home page.</p>
+    </div>
+    <a class="btn btn-primary" href="/WhoWeAre/CreateWhoWeAreDetail/"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Who We Are</a>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Who We Are</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "record" : "records")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Subtitle</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">@item.Title</td>
+                            <td>@item.Subtitle</td>
+                            <td data-label="Actions"><div class="actions"><a href="/WhoWeAre/DeleteWhoWeAreDetail/@item.WhoWeAreDetailID" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash-can" aria-hidden="true"></i> Delete</a><a href="/WhoWeAre/UpdateWhoWeAreDetail/@item.WhoWeAreDetailID" class="btn btn-sm btn-ghost"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Update</a></div></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <strong>Nothing here yet</strong>
+            <p>Add the first “Who we are” entry.</p>
+        </div>
+    }
+</section>

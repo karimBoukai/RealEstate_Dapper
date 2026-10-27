@@ -1,0 +1,10 @@
+﻿@*
+    Public-site scripts are bundled by Vite (ClientApp → wwwroot/dist/site.js) and loaded as an
+    ES module from the <head> component. GSAP, Lenis and the React islands are code-split there;
+    the previous jQuery / owl-carousel / magnific-popup / countUp stack is no longer needed.
+    This component is kept so the layout contract stays the same; pages can still add scripts
+    through the optional "Scripts" section.
+*@
+<noscript>
+    <style>[data-reveal], [data-hero-fade] { opacity: 1 !important; visibility: visible !important; transform: none !important; }</style>
+</noscript>

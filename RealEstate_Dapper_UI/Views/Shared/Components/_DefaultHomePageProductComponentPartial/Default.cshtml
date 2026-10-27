@@ -1,0 +1,35 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductDtos>
+@{
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductDtos>();
+}
+<section class="section" id="listings" aria-labelledby="listings-title">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <div>
+                <p class="eyebrow">Deal of the day</p>
+                <h2 class="section-title" id="listings-title">Today's <span class="serif">special</span> ads</h2>
+            </div>
+            <a class="btn btn-ghost" asp-controller="Property" asp-action="Ads">
+                All sale &amp; rent ads <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        @if (items.Any())
+        {
+            <div class="card-grid">
+                @foreach (var item in items)
+                {
+                    <partial name="_PropertyCard" model='new PropertyCardModel(item.ProductID, item.Title, item.Price, item.Type, item.CategoryName, item.Address, item.District, item.City, item.CoverImage, ViewFormat.PropertyUrl(item.SlugUrl, item.Title, item.ProductID))' />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                <strong>No special ads today</strong>
+                <p>Check back soon, or browse every listing.</p>
+            </div>
+        }
+    </div>
+</section>

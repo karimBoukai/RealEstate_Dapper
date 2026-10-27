@@ -1,0 +1,40 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string? Current(string name) => string.Equals(controller, name, StringComparison.OrdinalIgnoreCase) ? "page" : null;
+}
+<header id="site-header" class="site-header on-dark">
+    <div class="container">
+        <a class="brand" href="/Default/Index/">
+            <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-house-chimney"></i></span>
+            <span class="brand-text">Real Estate<small>Homes &amp; living</small></span>
+        </a>
+
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+            <ul class="nav-list">
+                <li><a class="nav-link" href="/Default/Index/" aria-current="@Current("Default")">Main Page</a></li>
+                <li><a class="nav-link" asp-controller="Property" asp-action="Ads" aria-current="@Current("Property")">Ads</a></li>
+                <li><a class="nav-link" asp-controller="Login" asp-action="Index" aria-current="@Current("Login")">Login</a></li>
+            </ul>
+
+            <div class="nav-tools">
+                <a class="icon-btn" href="/Default/Index/#search" aria-label="Search properties" title="Search properties">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                </a>
+                <a class="btn btn-accent" asp-controller="Login" asp-action="Index">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Post an ad
+                </a>
+            </div>
+        </nav>
+
+        <label class="theme-switch" for="checkbox" title="Toggle dark mode">
+            <input type="checkbox" id="checkbox" aria-label="Dark mode">
+            <i class="fa-regular fa-sun ic-sun" aria-hidden="true"></i>
+            <i class="fa-regular fa-moon ic-moon" aria-hidden="true"></i>
+        </label>
+
+        <button class="icon-btn nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu">
+            <i class="fa-solid fa-bars ic-open" aria-hidden="true"></i>
+            <i class="fa-solid fa-xmark ic-close" aria-hidden="true"></i>
+        </button>
+    </div>
+</header>

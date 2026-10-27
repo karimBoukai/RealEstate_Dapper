@@ -1,0 +1,39 @@
+﻿@model List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultLast3ProductWithCategoryDtos>
+@{
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultLast3ProductWithCategoryDtos>();
+}
+@if (items.Any())
+{
+    <section class="section" id="news" aria-labelledby="news-title">
+        <div class="container">
+            <div class="section-head center" data-reveal>
+                <p class="eyebrow">Latest</p>
+                <h2 class="section-title" id="news-title">Tips and <span class="serif">advices</span></h2>
+            </div>
+            <div class="card-grid">
+                @foreach (var item in items)
+                {
+                    var url = ViewFormat.PropertyUrl(null, item.Title, item.ProductID);
+                    <article class="news-card" data-reveal>
+                        <a class="news-media" href="@url" tabindex="-1" aria-hidden="true">
+                            @if (!string.IsNullOrWhiteSpace(item.CoverImage))
+                            {
+                                <img src="@item.CoverImage" alt="" loading="lazy" decoding="async" width="640" height="400">
+                            }
+                            <time class="news-date" datetime="@item.AdvertisementDate.ToString("yyyy-MM-dd")">
+                                <span class="small">@item.AdvertisementDate.ToString("yyyy")</span>
+                                <span class="big">@item.AdvertisementDate.ToString("dd")</span>
+                                <span class="small">@item.AdvertisementDate.ToString("MMMM", System.Globalization.CultureInfo.InvariantCulture)</span>
+                            </time>
+                        </a>
+                        <div class="news-body">
+                            @if (!string.IsNullOrWhiteSpace(item.CategoryName)) { <span class="badge badge-accent" style="justify-self:start">@item.CategoryName</span> }
+                            <h3><a href="@url">@item.Title</a></h3>
+                            <p>@ViewFormat.Excerpt(item.Description, 100)</p>
+                        </div>
+                    </article>
+                }
+            </div>
+        </div>
+    </section>
+}

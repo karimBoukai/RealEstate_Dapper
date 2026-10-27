@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs">Admin panel</p>
+        <h1>Dashboard</h1>
+        <p>Listings, people and activity at a glance.</p>
+    </div>
+    <a class="btn btn-primary" href="/Product/CreateProduct/"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Ad</a>
+</div>
+
+<!-- Sale & Revenue -->
+@await Component.InvokeAsync("_DashboardStatisticsComponentPartial")
+
+<!-- Sales charts (template sample data, unchanged) -->
+<div class="grid grid-2">
+    <section class="card card-pad chart-card" aria-labelledby="ws-title">
+        <div class="card-head">
+            <div><h2 id="ws-title">Worldwide Sales</h2><p>Sample data</p></div>
+            <a href="" class="btn btn-ghost btn-sm">Show All</a>
+        </div>
+        <div class="chart-box"><canvas id="worldwide-sales" data-chart="worldwide-sales" role="img" aria-label="Bar chart: worldwide sales by year for USA, UK and AU"></canvas></div>
+    </section>
+    <section class="card card-pad chart-card" aria-labelledby="sr-title">
+        <div class="card-head">
+            <div><h2 id="sr-title">Salse &amp; Revenue</h2><p>Sample data</p></div>
+            <a href="" class="btn btn-ghost btn-sm">Show All</a>
+        </div>
+        <div class="chart-box"><canvas id="salse-revenue" data-chart="salse-revenue" role="img" aria-label="Line chart: sales and revenue by year"></canvas></div>
+    </section>
+</div>
+
+<!-- Recent products -->
+@await Component.InvokeAsync("_DashboardLast5ProductComponentPartial")
+
+<!-- Widgets -->
+<div class="grid grid-3">
+    @await Component.InvokeAsync("_DashboardLast4ContactComponentPartial")
+
+    @await Component.InvokeAsync("_DashboardToDoListComponentPartial")
+
+    <section class="card card-pad" aria-labelledby="cal-title">
+        <div class="card-head">
+            <h2 id="cal-title">Calender</h2>
+            <a href="" class="btn btn-ghost btn-sm">Show All</a>
+        </div>
+        <div id="calender"></div>
+    </section>
+</div>

@@ -1,0 +1,107 @@
+﻿@model RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductDtos
+@{
+    ViewData["Title"] = (string?)ViewBag.Title1 ?? "Property";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+    string title = ViewBag.Title1 ?? "";
+    int months = ViewBag.DateDiff ?? 0;
+    var price = ViewFormat.Money((decimal)ViewBag.Price);
+    var advertised = (DateTime)ViewBag.AdvertisementDate;
+}
+
+<section class="page-hero">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb" data-hero-fade>
+            <ol>
+                <li><a href="/Default/Index/">Home</a></li>
+                <li><a asp-controller="Property" asp-action="Ads">Property</a></li>
+                <li aria-current="page">@title</li>
+            </ol>
+        </nav>
+
+        <div class="detail-head">
+            <div>
+                <ul class="detail-meta" data-hero-fade>
+                    @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Type))
+                    {
+                        <li><span class="badge badge-accent">@ViewBag.Type</span></li>
+                    }
+                    <li><i class="fa-regular fa-clock" aria-hidden="true"></i>@months @(months == 1 ? "Month" : "Months") ago</li>
+                    <li><i class="fa-regular fa-eye" aria-hidden="true"></i>250 views</li>
+                </ul>
+
+                <div data-island="split-title">
+                    <script type="application/json">@Html.Raw(Json.Serialize(new { text = title }))</script>
+                    <h1 class="detail-title">@title</h1>
+                </div>
+
+                <p class="detail-address" data-hero-fade>
+                    <i class="fa-solid fa-location-dot" aria-hidden="true" style="color:#e2c58f;margin-right:.4rem"></i>
+                    @ViewBag.Address @ViewBag.District / @ViewBag.City
+                </p>
+
+                <ul class="spec-bar" aria-label="Key facts" data-hero-fade style="list-style:none;padding:0;margin-bottom:0">
+                    <li class="spec-pill"><i class="fa-solid fa-bed" aria-hidden="true"></i>@ViewBag.BedRoomCount <span class="visually-hidden">bedrooms</span></li>
+                    <li class="spec-pill"><i class="fa-solid fa-bath" aria-hidden="true"></i>@ViewBag.BathCount <span class="visually-hidden">bathrooms</span></li>
+                    <li class="spec-pill"><i class="fa-solid fa-expand" aria-hidden="true"></i>@ViewBag.ProductSize m&sup2;</li>
+                </ul>
+            </div>
+
+            <div class="detail-price" data-hero-fade>
+                <span>@ViewBag.Type price</span>
+                <strong>$@price</strong>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-tight">
+    <div class="container detail-layout">
+        <div class="detail-main">
+            @await Component.InvokeAsync("_PropertySliderComponentPartial", new { id = ViewBag.i })
+
+            <article class="card card-pad detail-section" data-reveal>
+                <h2>Description</h2>
+                <p class="mb-0">@ViewBag.Description</p>
+            </article>
+
+            <article class="card card-pad detail-section" data-reveal>
+                <h2>Property details</h2>
+                <dl class="spec-grid">
+                    <div><dt>Property ID</dt><dd>@ViewBag.ProductID</dd></div>
+                    <div><dt>Property size</dt><dd>@ViewBag.ProductSize m&sup2;</dd></div>
+                    <div><dt>Rooms</dt><dd>@ViewBag.RoomCount</dd></div>
+                    <div><dt>Bedrooms</dt><dd>@ViewBag.BedRoomCount</dd></div>
+                    <div><dt>Bathrooms</dt><dd>@ViewBag.BathCount</dd></div>
+                    <div><dt>Exterior material</dt><dd>@ViewBag.ExteriorMaterial</dd></div>
+                    <div><dt>Structure type</dt><dd>@ViewBag.StructureType</dd></div>
+                    <div><dt>Garage size</dt><dd>@ViewBag.GarageSize</dd></div>
+                    <div><dt>Garages</dt><dd>15</dd></div>
+                    <div><dt>@ViewBag.Type price</dt><dd>@price $</dd></div>
+                    <div><dt>Built year</dt><dd>@ViewBag.BuildYear</dd></div>
+                    <div><dt>Available from</dt><dd><time datetime="@advertised.ToString("yyyy-MM-dd")">@advertised.ToString("dd/MM/yyyy")</time></dd></div>
+                </dl>
+            </article>
+
+            @await Component.InvokeAsync("_PropertyAmenitiesComponentPartial", new { id = ViewBag.ProductID })
+
+            <article class="card card-pad detail-section" data-reveal>
+                <h2>Location</h2>
+                <div class="embed">
+                    <iframe title="Property location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2895687731!2d-74.26055986835598!3d40.697668402590374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sin!4v1562582305883!5m2!1sen!2sin"></iframe>
+                </div>
+            </article>
+
+            <article class="card card-pad detail-section" data-reveal>
+                <h2>Video</h2>
+                <div class="embed">
+                    <iframe title="Property video" loading="lazy" allowfullscreen
+                            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                            src="https://www.youtube.com/embed/jqP3m3ElcxA"></iframe>
+                </div>
+            </article>
+        </div>
+
+        @await Component.InvokeAsync("_PropertyAppUserComponentPartial")
+    </div>
+</section>

@@ -1,0 +1,72 @@
+@model List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductAdvertsListWithCategoryByEmployeeDtos>
+@{
+    ViewData["Title"] = "Active Ads Listings";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<RealEstate_Dapper_UI.Dtos.ProductDtos.ResultProductAdvertsListWithCategoryByEmployeeDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/EstateAgent/Dashboard/Index/">My Dashboard</a> / Active Ads Listings</p>
+        <h1>Active Ads Listings</h1>
+        <p>Your adverts that are currently visible on the site.</p>
+    </div>
+    <a class="btn btn-primary" asp-area="EstateAgent" asp-controller="MyAdverts" asp-action="CreateAdvert"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Ad</a>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Active Ads Listings</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "ad" : "ads")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Advertisement Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col" class="num">Price</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell">
+                                <span class="row-flex" style="gap:.75rem;flex-wrap:nowrap">
+                                    @if (!string.IsNullOrWhiteSpace(item.CoverImage) && (item.CoverImage.StartsWith("http") || item.CoverImage.StartsWith("/"))) { <img class="thumb" src="@item.CoverImage" alt="" width="44" height="44" loading="lazy"> }
+                                    <span>@item.Title</span>
+                                </span>
+                            </td>
+                            <td><span class="badge">@item.CategoryName</span></td>
+                            <td class="num">@ViewFormat.Money(item.Price)</td>
+                            <td><span class="badge badge-info">@item.Type</span></td>
+                            <td data-label="Actions">
+                                <div class="actions">
+                                    <a class="btn btn-sm btn-ghost" asp-area="EstateAgent" asp-controller="MyAdverts" asp-action="ProductAdsPageStatusChangeToFalse" asp-route-id="@item.ProductID"><i class="fa-regular fa-circle-pause" aria-hidden="true"></i> Turn off</a>
+                                    <a class="btn btn-sm btn-ghost" href="@ViewFormat.PropertyUrl(null, item.Title, item.ProductID)"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> On The Site</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+            <strong>No active ads</strong>
+            <p>Ads you publish will appear here.</p>
+        </div>
+    }
+</section>

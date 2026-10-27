@@ -1,0 +1,10 @@
+﻿@*
+    Estate Agent layout panel. Now a nested layout over the shared dashboard shell
+    (Views/Admin/Index.cshtml) with the agent sidebar/navbar components.
+    The original file also called @RenderBody() a second time after </html>, which is invalid; removed.
+*@
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["DashboardChrome"] = "EstateAgent";
+}
+@RenderBody()

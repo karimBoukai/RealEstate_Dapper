@@ -1,0 +1,56 @@
+@model List<ResultAllAmenitiesDtos>
+@{
+    ViewData["Title"] = "Amenities";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var items = Model ?? new List<ResultAllAmenitiesDtos>();
+    int count = 0;
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / Amenity</p>
+        <h1>Amenities</h1>
+        <p>Features that can be attached to a property.</p>
+    </div>
+    <a class="btn btn-primary" href="/Amenity/CreateAmenity/"><i class="fa-solid fa-plus" aria-hidden="true"></i> New Amenity</a>
+</div>
+
+<section class="card card-pad" aria-labelledby="list-title">
+    <div class="table-toolbar">
+        <h2 class="visually-hidden" id="list-title">Amenities</h2>
+        <span class="count">@items.Count @(items.Count == 1 ? "record" : "records")</span>
+    </div>
+    @if (items.Any())
+    {
+        <div class="table-wrap">
+            <table class="table table-stack">
+                <thead>
+                    <tr>
+                        <th scope="col" class="idx">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row" class="idx">@count</th>
+                            <td class="title-cell"><i class="fa-solid fa-check" aria-hidden="true" style="color:var(--success);margin-right:.5rem"></i>@item.Title</td>
+                            <td data-label="Actions"><div class="actions"><a href="/Amenity/DeleteAmenity/@item.AmenityID" class="btn btn-sm btn-danger"><i class="fa-regular fa-trash-can" aria-hidden="true"></i> Delete</a><a href="/Amenity/UpdateAmenity/@item.AmenityID" class="btn btn-sm btn-ghost"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Update</a></div></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fa-regular fa-square-check" aria-hidden="true"></i>
+            <strong>No amenities yet</strong>
+            <p>Add amenities such as pool, garden or parking.</p>
+        </div>
+    }
+</section>

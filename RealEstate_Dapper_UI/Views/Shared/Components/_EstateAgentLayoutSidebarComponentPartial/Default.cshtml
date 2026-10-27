@@ -1,0 +1,37 @@
+﻿@* Estate agent sidebar (used by Areas/EstateAgent/Views/LayoutEstateAgent/Index.cshtml). Links kept as in the original. *@
+<aside class="sidebar" id="dash-sidebar" aria-label="Estate agent navigation">
+    <div class="sidebar-head">
+        <a href="/Default/index/" class="brand" title="Go to site">
+            <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-house-chimney"></i></span>
+            <span class="brand-text">Real Estate<small>Agent Panel</small></span>
+        </a>
+    </div>
+
+    <div class="sidebar-user">
+        <span class="avatar" aria-hidden="true">RE</span>
+        <span class="presence" aria-hidden="true"></span>
+        <div>
+            <strong>Real Estate Agent</strong>
+            <span>Real Estate</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <p class="nav-group-label">Overview</p>
+        <a href="/EstateAgent/Dashboard/index/" class="side-link"><i class="fa fa-tachometer-alt" aria-hidden="true"></i><span>Dashboard</span></a>
+        <a href="/Default/index/" class="side-link"><i class="fa fa-globe" aria-hidden="true"></i><span>Go To Site</span></a>
+
+        <p class="nav-group-label">Listings</p>
+        <a href="/EstateAgent/MyAdverts/ActiveAdverts/" class="side-link"><i class="fa fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a>
+        <a href="/EstateAgent/MyAdverts/PassiveAdverts/" class="side-link"><i class="fa fa-history" aria-hidden="true"></i><span>Past Ads</span></a>
+        <a href="/DealOfTheDay/Index/" class="side-link"><i class="fa fa-tags" aria-hidden="true"></i><span>Deals Of The Day</span></a>
+
+        <p class="nav-group-label">Account</p>
+        <a href="/Profile/MyProfile/" class="side-link"><i class="fa fa-user" aria-hidden="true"></i><span>My Profile</span></a>
+        <a href="/Charts/Index/" class="side-link"><i class="fa fa-id-card" aria-hidden="true"></i><span>Information</span></a>
+        <a href="/Charts/Index/" class="side-link"><i class="fa fa-inbox" aria-hidden="true"></i><span>New Messages</span></a>
+        <a href="/Charts/Index/" class="side-link"><i class="fa fa-paper-plane" aria-hidden="true"></i><span>Sent Messages</span></a>
+        <a href="/Charts/Index/" class="side-link"><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>
+        <a href="/Login/Logout/" class="side-link"><i class="fa fa-sign-out-alt" aria-hidden="true"></i><span>Sign out</span></a>
+    </nav>
+</aside>

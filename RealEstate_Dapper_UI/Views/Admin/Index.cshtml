@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+    // Optional: a nested layout (Areas/EstateAgent/Views/LayoutEstateAgent/Index.cshtml) can ask for the agent chrome.
+    var agentChrome = string.Equals(ViewData["DashboardChrome"] as string, "EstateAgent", StringComparison.Ordinal);
+}
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("_AdminLayoutHeadComponentPartial")
+<body class="dash">
+    <a class="skip-link" href="#dash-content">Skip to content</a>
+    <div class="dash-shell">
+        <!-- Spinner -->
+        @await Component.InvokeAsync("_AadminLayoutSpinnerComponentPartial")
+
+        <!-- Sidebar -->
+        @if (agentChrome)
+        {
+            @await Component.InvokeAsync("_EstateAgentLayoutSidebarComponentPartial")
+        }
+        else
+        {
+            @await Component.InvokeAsync("_AdminLayoutSideBarComponentPartial")
+        }
+        <button type="button" class="sidebar-backdrop" aria-label="Close navigation" tabindex="-1"></button>
+
+        <!-- Content -->
+        <div class="dash-main">
+            @if (agentChrome)
+            {
+                @await Component.InvokeAsync("_EstateAgentNavBarComponentPartial")
+            }
+            else
+            {
+                @await Component.InvokeAsync("_AdminLayoutNavbarComponentPartial")
+            }
+
+            <main class="dash-content" id="dash-content" tabindex="-1">
+                @if (TempData["DashboardError"] is string dashError)
+                {
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                        <div>@dashError</div>
+                    </div>
+                }
+                @RenderBody()
+            </main>
+
+            @await Component.InvokeAsync("_AdminLayouFooterComponentPartial")
+        </div>
+
+        <a href="#dash-content" class="icon-btn back-to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
+    </div>
+
+    @await Component.InvokeAsync("_AdminLayoutScriptComponentPartial")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

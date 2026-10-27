@@ -1,0 +1,29 @@
+@model RealEstate_Dapper_UI.Helpers.PropertyCardModel
+@{
+    var place = string.Join(" · ", new[] { Model.District, Model.City }.Where(s => !string.IsNullOrWhiteSpace(s)));
+}
+<a class="property-card" href="@Model.Url" data-reveal>
+    <div class="property-media">
+        @if (!string.IsNullOrWhiteSpace(Model.CoverImage))
+        {
+            <img src="@Model.CoverImage" alt="" width="640" height="480"
+                 loading="@(Model.Eager ? "eager" : "lazy")" decoding="async">
+        }
+        <div class="property-badges">
+            @if (!string.IsNullOrWhiteSpace(Model.Type)) { <span class="badge badge-glass">@Model.Type</span> }
+            @if (!string.IsNullOrWhiteSpace(Model.Category)) { <span class="badge badge-glass">@Model.Category</span> }
+        </div>
+        <p class="property-price"><span class="visually-hidden">Price: </span>$ @ViewFormat.Money(Model.Price)</p>
+    </div>
+    <div class="property-body">
+        @if (!string.IsNullOrWhiteSpace(Model.Title))
+        {
+            <h3 class="property-title">@Model.Title</h3>
+        }
+        <p class="property-address">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>@Model.Address @(string.IsNullOrEmpty(place) ? "" : "— " + place)</span>
+        </p>
+        <span class="property-cta" aria-hidden="true">View property <i class="fa-solid fa-arrow-right"></i></span>
+    </div>
+</a>

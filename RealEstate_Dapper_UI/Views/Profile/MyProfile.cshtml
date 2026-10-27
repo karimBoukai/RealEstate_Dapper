@@ -1,0 +1,102 @@
+﻿@model RealEstate_Dapper_UI.Dtos.EmployeeDtos.UpdateEmployeeDtos
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Admin/Index.cshtml";
+    var m = Model ?? new RealEstate_Dapper_UI.Dtos.EmployeeDtos.UpdateEmployeeDtos();
+    var notLoaded = m.EmployeeID == 0 && string.IsNullOrEmpty(m.Name);
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Dashboard/Index/">Dashboard</a> / My Profile</p>
+        <h1>My Profile</h1>
+        <p>Your public details as shown to clients.</p>
+    </div>
+</div>
+
+@if (notLoaded)
+{
+    <div class="alert alert-warning" role="status">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <div>Your profile details could not be loaded from the API, so the fields below are empty.</div>
+    </div>
+}
+
+<div class="grid" style="grid-template-columns:minmax(0,320px) minmax(0,1fr);align-items:start" id="profile-grid">
+    <section class="card card-pad" aria-label="Profile summary" style="text-align:center">
+        @if (!string.IsNullOrWhiteSpace(m.ImageUrl))
+        {
+            <img src="@m.ImageUrl" alt="" width="112" height="112" style="width:112px;height:112px;border-radius:32px;object-fit:cover;margin:0 auto 1rem">
+        }
+        else
+        {
+            <span class="avatar" aria-hidden="true" style="width:112px;height:112px;border-radius:32px;margin:0 auto 1rem;font-size:2rem">@ViewFormat.Initials(m.Name)</span>
+        }
+        <h2 style="font-size:var(--fs-lg);margin-bottom:.25rem">@(string.IsNullOrWhiteSpace(m.Name) ? "—" : m.Name)</h2>
+        <p class="muted">@m.Title</p>
+        <div class="row-flex" style="justify-content:center">
+            <span class="badge @(m.Status ? "badge-success" : "badge-muted") badge-dot">@(m.Status ? "Active" : "Passive")</span>
+            <span class="badge badge-accent">Role @m.EmployeeRole</span>
+        </div>
+    </section>
+
+    <section class="card card-pad form-card" aria-labelledby="profile-form-title">
+        <div class="card-head"><div><h2 id="profile-form-title">Edit details</h2><p>Employee ID, status and role are managed by an administrator.</p></div></div>
+
+        <form asp-controller="Profile" asp-action="MyProfile" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <!-- EmployeeID must be sent back, but not editable -->
+            <input type="hidden" asp-for="EmployeeID" />
+
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label class="field-label" for="employee-id-display">Employee Id</label>
+                    <input type="text" id="employee-id-display" class="form-control" value="@m.EmployeeID" readonly />
+                </div>
+                <div class="field">
+                    <label class="field-label" for="Name">Name</label>
+                    <input type="text" class="form-control" asp-for="Name" autocomplete="name" />
+                    <span asp-validation-for="Name"></span>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="Title">Title</label>
+                    <input type="text" class="form-control" asp-for="Title" />
+                </div>
+                <div class="field">
+                    <label class="field-label" for="Mail">Email</label>
+                    <input type="email" class="form-control" asp-for="Mail" autocomplete="email" />
+                    <span asp-validation-for="Mail"></span>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="PhoneNumber">Phone Number</label>
+                    <input type="text" class="form-control" asp-for="PhoneNumber" inputmode="tel" autocomplete="tel" />
+                </div>
+                <div class="field">
+                    <label class="field-label" for="ImageUrl">Image Url</label>
+                    <input type="text" class="form-control" asp-for="ImageUrl" inputmode="url" />
+                </div>
+                <div class="field">
+                    <label class="field-label" for="status-display">Status</label>
+                    <!-- show but NOT editable -->
+                    <input type="text" id="status-display" class="form-control" value="@(m.Status ? "Active" : "Passive")" readonly />
+                    <input type="hidden" asp-for="Status" />
+                </div>
+                <div class="field">
+                    <label class="field-label" for="role-display">Employee role</label>
+                    <!-- show but NOT editable -->
+                    <input type="text" id="role-display" class="form-control" value="@m.EmployeeRole" readonly />
+                    <input type="hidden" asp-for="EmployeeRole" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save Changes</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<style>
+    @@media (max-width: 900px) { #profile-grid { grid-template-columns: minmax(0, 1fr) !important; } }
+</style>

@@ -1,0 +1,71 @@
+@model List<ResultCategoryDtos>
+@*
+    Home hero + property search. Shared by _DefaultFeatureComponentPartial and Default/PartialSearch.
+    The form still posts searchKeyValue / propertyCategoryID / city to Default/PartialSearch.
+*@
+@{
+    var categories = Model ?? new List<ResultCategoryDtos>();
+    var cities = new[] { "Istanbul", "London", "Paris", "Budapest", "LA", "NYC", "Rome", "Izmir" };
+}
+<section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media" aria-hidden="true">
+        <picture>
+            <source type="image/webp" srcset="/img/hero-960.webp 960w, /img/hero-1440.webp 1440w, /img/hero-1920.webp 1920w" sizes="100vw">
+            <img src="/img/hero-1440.jpg" srcset="/img/hero-960.jpg 960w, /img/hero-1440.jpg 1440w, /img/hero-1920.jpg 1920w" sizes="100vw"
+                 alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
+        </picture>
+    </div>
+
+    <div class="container hero-inner">
+        <div class="hero-copy">
+            <p class="eyebrow" data-hero-fade>Own your dream home now</p>
+            <h1 class="hero-title" id="hero-title">Let's find the right home for you <span class="serif">today.</span></h1>
+            <p class="hero-sub" data-hero-fade>Homes for sale and for rent, hand-picked by our estate agents — search by keyword, category and city.</p>
+        </div>
+
+        <form asp-action="PartialSearch" asp-controller="Default" method="post" class="search-panel" id="search" role="search" aria-label="Search properties" data-hero-fade>
+            <div class="search-field">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <label for="searchKeyValue">Keywords</label>
+                <input type="search" id="searchKeyValue" name="searchKeyValue" placeholder="Villa with sea view, garden…" required>
+            </div>
+            <div class="search-field has-select">
+                <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                <label for="propertyCategoryID">Category</label>
+                <select id="propertyCategoryID" name="propertyCategoryID" required>
+                    <option value="" selected disabled>Real Estate Tour</option>
+                    @foreach (var item in categories)
+                    {
+                        <option value="@item.CategoryID">@item.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="search-field has-select">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                <label for="city">City</label>
+                <select id="city" name="city" required>
+                    <option value="" selected disabled>Select Country</option>
+                    @foreach (var c in cities)
+                    {
+                        <option>@c</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-accent search-submit">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Search
+            </button>
+        </form>
+
+        <div class="hero-foot" data-hero-fade>
+            <div class="most-searches">
+                <h2>Most searches</h2>
+                <ul>
+                    <li>Villa</li>
+                    <li>Apartment</li>
+                    <li>Summer House</li>
+                </ul>
+            </div>
+            <a class="scroll-cue" href="#listings"><span aria-hidden="true"></span>Scroll</a>
+        </div>
+    </div>
+</section>

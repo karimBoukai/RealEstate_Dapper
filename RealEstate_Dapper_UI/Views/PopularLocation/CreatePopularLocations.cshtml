@@ -1,0 +1,37 @@
+@model CreatePopularLocationDtos
+@{
+    ViewData["Title"] = "Add New Popular Location";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/PopularLocation/Index/">Locations</a> / Add New Popular Location</p>
+        <h1>Add New Popular Location</h1>
+        <p>Feature a city on the home page.</p>
+    </div>
+</div>
+
+<section class="card card-pad form-card" aria-labelledby="form-title">
+    <h2 class="visually-hidden" id="form-title">Add New Popular Location</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-grid cols-2">
+        <div class="field">
+            <label class="field-label" for="CityName">City Name</label>
+            <input type="text" asp-for="CityName" class="form-control" />
+            <span asp-validation-for="CityName"></span>
+        </div>
+        <div class="field">
+            <label class="field-label" for="ImageUrl">Image Url</label>
+            <input type="text" asp-for="ImageUrl" class="form-control" inputmode="url" />
+            <span asp-validation-for="ImageUrl"></span>
+        </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check" aria-hidden="true"></i> Save New Location</button>
+            <a href="/PopularLocation/Index/" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</section>

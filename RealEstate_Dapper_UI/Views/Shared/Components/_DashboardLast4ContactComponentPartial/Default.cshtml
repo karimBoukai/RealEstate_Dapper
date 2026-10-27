@@ -1,0 +1,32 @@
+﻿@model List<Last4ContactResultDtos>
+@{
+    var items = Model ?? new List<Last4ContactResultDtos>();
+}
+<section class="card card-pad" aria-labelledby="msg-title">
+    <div class="card-head">
+        <h2 id="msg-title">Messages</h2>
+        <a href="" class="btn btn-ghost btn-sm">Show All</a>
+    </div>
+    @if (items.Any())
+    {
+        <ul class="list">
+            @foreach (var item in items)
+            {
+                <li>
+                    <span class="avatar" aria-hidden="true">@ViewFormat.Initials(item.Name)</span>
+                    <div style="min-width:0;flex:1">
+                        <div class="meta">
+                            <strong>@item.Name</strong>
+                            <small><time datetime="@item.SendDate.ToString("yyyy-MM-dd")">@(((DateTime)item.SendDate).ToString("dd-MM-yyyy"))</time></small>
+                        </div>
+                        <p>@item.Message</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="empty-state"><i class="fa-regular fa-envelope-open" aria-hidden="true"></i><strong>No messages</strong></div>
+    }
+</section>

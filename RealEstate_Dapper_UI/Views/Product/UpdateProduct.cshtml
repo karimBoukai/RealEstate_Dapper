@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Update Product";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+@*
+    This view was an empty placeholder and ProductController has no UpdateProduct action, so the
+    "Update" buttons on Products/Ads still lead nowhere. Implementing editing would add a new
+    feature/API call, which is out of scope for the redesign (see CHANGES.md).
+*@
+<div class="page-head">
+    <div>
+        <p class="crumbs"><a href="/Product/Index/">Products</a> / Update</p>
+        <h1>Update Product</h1>
+    </div>
+</div>
+<div class="empty-state">
+    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>
+    <strong>Editing products isn't available yet</strong>
+    <p>This screen has no form in the current application.</p>
+    <a class="btn btn-ghost" href="/Product/Index/" style="margin-top:1rem">Back to products</a>
+</div>

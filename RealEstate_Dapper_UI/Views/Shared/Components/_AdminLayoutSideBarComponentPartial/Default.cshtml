@@ -1,0 +1,91 @@
+﻿@using System.Security.Claims
+
+@{
+    var role =
+        User.FindFirst("EmployeeRole")?.Value ??
+        User.FindFirst("UserRole")?.Value ??
+        User.FindFirst("role")?.Value ??
+        User.FindFirst(ClaimTypes.Role)?.Value;
+
+    var panelTitle = role switch
+    {
+        "1" => "Admin Panel",
+        "3" => "Manager Panel",
+        "5" => "Employee Panel",
+        _ => "User Panel"
+    };
+    var userName = User.FindFirst("UserName")?.Value ?? User.Identity?.Name;
+}
+
+<aside class="sidebar" id="dash-sidebar" aria-label="Dashboard navigation">
+    <div class="sidebar-head">
+        <a href="/Default/Index/" class="brand" title="Go to site">
+            <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-house-chimney"></i></span>
+            <span class="brand-text">Real Estate<small>@panelTitle</small></span>
+        </a>
+    </div>
+
+    <div class="sidebar-user">
+        <span class="avatar" aria-hidden="true">@ViewFormat.Initials(userName ?? panelTitle)</span>
+        <span class="presence" aria-hidden="true"></span>
+        <div>
+            <strong>@(userName ?? panelTitle)</strong>
+            <span>@panelTitle</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        @if (role == "1" || role == "3")
+        {
+            <p class="nav-group-label">Overview</p>
+            <a href="/Dashboard/Index/" class="side-link"><i class="fa fa-tachometer-alt" aria-hidden="true"></i><span>Main Page</span></a>
+            <a href="/EstateAgent/Dashboard/Index/" class="side-link"><i class="fa fa-chart-line" aria-hidden="true"></i><span>My Dashboard</span></a>
+            <a href="/Default/Index/" class="side-link"><i class="fa fa-globe" aria-hidden="true"></i><span>Go To Site</span></a>
+            <a href="/Statistics/Index/" class="side-link"><i class="fa fa-calculator" aria-hidden="true"></i><span>Statistics</span></a>
+
+            <p class="nav-group-label">Management</p>
+            <a href="/Employee/Index/" class="side-link"><i class="fa fa-users" aria-hidden="true"></i><span>Employees</span></a>
+            <a href="/Category/Index/" class="side-link"><i class="fa fa-th" aria-hidden="true"></i><span>Categories</span></a>
+            <a href="/Product/Index/" class="side-link"><i class="fa fa-box" aria-hidden="true"></i><span>Products</span></a>
+            <a href="/Ads/Index/" class="side-link"><i class="fa fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a>
+            <a href="/EstateAgent/MyAdverts/ActiveAdverts/" class="side-link"><i class="fa fa-check-circle i-success" aria-hidden="true"></i><span>Active Ads</span></a>
+            <a href="/EstateAgent/MyAdverts/PassiveAdverts/" class="side-link"><i class="fa fa-pause-circle i-warning" aria-hidden="true"></i><span>Passive Ads</span></a>
+            <a href="/PopularLocation/Index/" class="side-link"><i class="fa fa-map-marker-alt" aria-hidden="true"></i><span>Locations</span></a>
+            <a href="/WhoWeAre/Index/" class="side-link"><i class="fa fa-info-circle" aria-hidden="true"></i><span>Who We Are</span></a>
+            <a href="/Service/Index/" class="side-link"><i class="fa fa-cogs" aria-hidden="true"></i><span>Services</span></a>
+            <a href="/DealOfTheDay/Index/" class="side-link"><i class="fa fa-tags" aria-hidden="true"></i><span>Deal Of The Day</span></a>
+            <a href="/Amenity/Index/" class="side-link"><i class="fa fa-check-square" aria-hidden="true"></i><span>Amenity</span></a>
+
+            <p class="nav-group-label">Communication</p>
+            <a href="/Mailbox/Index/" class="side-link"><i class="fa fa-inbox" aria-hidden="true"></i><span>Mailbox</span></a>
+            <a href="/Message/Index/" class="side-link"><i class="fa fa-comments" aria-hidden="true"></i><span>Messages</span></a>
+
+            <p class="nav-group-label">Account</p>
+            <a href="/Profile/MyProfile/" class="side-link"><i class="fa fa-user" aria-hidden="true"></i><span>My Profile</span></a>
+            <a href="/Settings/Index/" class="side-link"><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>
+            <a href="/Login/Logout/" class="side-link"><i class="fa fa-sign-out-alt" aria-hidden="true"></i><span>Sign Out</span></a>
+        }
+        else if (role == "5")
+        {
+            <p class="nav-group-label">Overview</p>
+            @* Same as "My Dashboard" in the admin and manager roles *@
+            <a href="/EstateAgent/Dashboard/Index/" class="side-link"><i class="fa fa-chart-line" aria-hidden="true"></i><span>Main Page</span></a>
+            <a href="/Default/Index/" class="side-link"><i class="fa fa-globe" aria-hidden="true"></i><span>Go To Site</span></a>
+
+            <p class="nav-group-label">Listings</p>
+            <a href="/Category/Index/" class="side-link"><i class="fa fa-th" aria-hidden="true"></i><span>Categories</span></a>
+            <a href="/Product/Index/" class="side-link"><i class="fa fa-box" aria-hidden="true"></i><span>Products</span></a>
+            <a href="/Ads/Index/" class="side-link"><i class="fa fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a>
+            <a href="/EstateAgent/MyAdverts/ActiveAdverts/" class="side-link"><i class="fa fa-check-circle i-success" aria-hidden="true"></i><span>Active Ads</span></a>
+            <a href="/EstateAgent/MyAdverts/PassiveAdverts/" class="side-link"><i class="fa fa-pause-circle i-warning" aria-hidden="true"></i><span>Passive Ads</span></a>
+            <a href="/PopularLocation/Index/" class="side-link"><i class="fa fa-map-marker-alt" aria-hidden="true"></i><span>Locations</span></a>
+            <a href="/DealOfTheDay/Index/" class="side-link"><i class="fa fa-tags" aria-hidden="true"></i><span>Deal Of The Day</span></a>
+            <a href="/Amenity/Index/" class="side-link"><i class="fa fa-check-square" aria-hidden="true"></i><span>Amenity</span></a>
+
+            <p class="nav-group-label">Account</p>
+            <a href="/Profile/MyProfile/" class="side-link"><i class="fa fa-user" aria-hidden="true"></i><span>My Profile</span></a>
+            <a href="/Settings/Index/" class="side-link"><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>
+            <a href="/Login/Logout/" class="side-link"><i class="fa fa-sign-out-alt" aria-hidden="true"></i><span>Sign Out</span></a>
+        }
+    </nav>
+</aside>
